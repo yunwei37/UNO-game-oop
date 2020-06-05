@@ -2,17 +2,21 @@
 #define SETWINDOW_H
 
 #include <QMainWindow>
+#include "mygamewindow.h"
 
 class mysetwindow : public QMainWindow
 {
-    Q_OBJECT
+  Q_OBJECT
+private:
+    myGameWindow* mgw;
+
 public:
-    explicit mysetwindow(QWidget *parent = nullptr);
-      void paintEvent(QPaintEvent *);
+  explicit mysetwindow(QWidget *parent = nullptr);
+  void paintEvent(QPaintEvent *);
 
 signals:
-    //自定义信号 使得主场景得知返回
-      void mysetBack();
+  //自定义信号 使得主场景得知返回
+  void mysetBack();
 };
 
 #endif // SETWINDOW_H

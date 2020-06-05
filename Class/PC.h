@@ -1,37 +1,37 @@
 #include <iostream>
-#include<vector>
-#inlcude <stack>
+#include <vector>
+#inlcude < stack>
 #include "UNOCard.h"
 #include "WildCard.h"
 #include "GameConstants.h"
 
 using namespace std;
 
-class PC: public Player,public GameConstants
+class PC : public Player, public GameConstants
 {
-	public:
-	PC() 
+public:
+	PC()
 	{
 		setName("PC");
 	}
-    PC(Player player) 
+	PC(Player player)
 	{
 	}
 	//PC plays a card
-	bool play(UNOCard topCard) 
+	bool play(UNOCard topCard)
 	{
 		bool done = false;
 		Color color = topCard.getColor();
 		String value = topCard.getValue();
-		
-		if(topCard.getType()==WILD)
+
+		if (topCard.getType() == WILD)
 		{
-			color = ((WildCard) topCard).getWildColor();			
+			color = ((WildCard)topCard).getWildColor();
 		}
-		for (UNOCard card : getAllCards()) 
+		for (UNOCard card : getAllCards())
 		{
-			if (card.getColor().equals(color) || card.getValue().equals(value)) 
-			{	
+			if (card.getColor().equals(color) || card.getValue().equals(value))
+			{
 				/*
 	              func  PLAYTHISCARD()  wait to complete
 	            */
@@ -42,11 +42,11 @@ class PC: public Player,public GameConstants
 		}
 
 		// if no card was found, play wild card
-		if (!done) 
+		if (!done)
 		{
-			for (UNOCard card : getAllCards()) 
+			for (UNOCard card : getAllCards())
 			{
-				if (card.getType() == WILD) 
+				if (card.getType() == WILD)
 				{
 					/*
 	                func  PLAYTHISCARD()  wait to complete
@@ -57,7 +57,7 @@ class PC: public Player,public GameConstants
 				}
 			}
 		}
-		if(getTotalCards()==1 || getTotalCards()==2)
+		if (getTotalCards() == 1 || getTotalCards() == 2)
 			saysUNO();
 		return done;
 	}

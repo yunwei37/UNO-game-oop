@@ -18,7 +18,6 @@ void PlayerWidget::setIsTurned(bool value)
 
 PlayerWidget::PlayerWidget(QWidget *parent) : QWidget(parent)
 {
-
 }
 
 PlayerWidget::PlayerWidget(QString id, QPixmap playerImg, QWidget *parent)
@@ -33,15 +32,18 @@ void PlayerWidget::paintEvent(QPaintEvent *event)
 {
     QWidget::paintEvent(event);
 
-    QPainter painter(this);//定义画板为自己背景，相当于VS中DC pDC
+    QPainter painter(this); //定义画板为自己背景，相当于VS中DC pDC
     //设置去毛边 高质量模式
-    painter.setRenderHints(QPainter::Antialiasing|QPainter::SmoothPixmapTransform);
+    painter.setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
     //透明覆盖
     painter.fillRect(this->rect(), QBrush(Qt::transparent));
     //定义一个图像用来绘到背景
-    QPixmap thisPix(width(),height());
+    QPixmap thisPix(width(), height());
 
-    thisPix=this->bgpix;
-     //绘制到背景上去
-    painter.drawPixmap(this->rect(),thisPix);
+    thisPix = this->bgpix;
+    //绘制到背景上去
+    painter.drawPixmap(this->rect(), thisPix);
+
+    painter.drawPixmap(QRect(this->rect().left(),this->rect().top(),this->rect().height()*0.8,this->rect().width()*0.8)
+                       , playerImg);
 }

@@ -1,57 +1,57 @@
 #include <iostream>
-#include<vector>
-#inlcude <stack>
+#include <vector>
+#inlcude < stack>
 #include <string>
 #include "UNOCard.h"
 #include "GameConstants.h"
 
 using namespace std;
 
-class CardDeck: public GameConstants
+class CardDeck : public GameConstants
 {
-	private:
+private:
 	vector<NumberCard> numberCards;
-    vector<ActionCard> actionCards;
+	vector<ActionCard> actionCards;
 	vector<WildCard> wildCards;
 	vector<UNOCard> UNOcards;
-	public:
+
+public:
 	CardDeck()
 	{
 		addCards();
 	}
-	void addCards() 
+	void addCards()
 	{
-		for(int color=0;color<4;color++)
+		for (int color = 0; color < 4; color++)
 		{
-			
+
 			//Create 76 NumberCards --> doubles except 0s.
-			for(int num=0;num<10;num++)
+			for (int num = 0; num < 10; num++)
 			{
-				int i=0;
+				int i = 0;
 				do
 				{
 					//mention here
 					UNOcards.push_back(new NumberCard(color, num));
 					i++;
-				}while(num!=0 && i<2);
+				} while (num != 0 && i < 2);
 			}
-			
+
 			//Create 24 ActionCards --> everything twice
-			for(int type=0;type<3;type++)
+			for (int type = 0; type < 3; type++)
 			{
-				for(int i=0;i<2;i++)
-					UNOcards.push_back(new ActionCard(color,ActionTypes[type]));
-			}					
-		}		
-		
-		for(type=0;type<2;type++)
+				for (int i = 0; i < 2; i++)
+					UNOcards.push_back(new ActionCard(color, ActionTypes[type]));
+			}
+		}
+
+		for (type = 0; type < 2; type++)
 		{
-			for(int i=0;i<4;i++)
+			for (int i = 0; i < 4; i++)
 			{
 				UNOcards.push_back(new WildCard(WildTypes[type]));
 			}
 		}
-		
 	}
 	vector<UNOCard> getCards()
 	{

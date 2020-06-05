@@ -29,7 +29,6 @@
         <file>UNO2D/GreenDrawtwo.jpg</file>
         <file>UNO2D/GreenReverse.jpg</file>
         <file>UNO2D/GreenSkip.jpg</file>
-        <file>UNO2D/QQ图片20140507014655.jpg</file>
         <file>UNO2D/Red0.jpg</file>
         <file>UNO2D/Red1.jpg</file>
         <file>UNO2D/Red2.jpg</file>
@@ -69,5 +68,6 @@
         <file>UNO2D/setup.png</file>
         <file>UNO2D/yes.png</file>
         <file>UNO2D/goback.png</file>
+        <file>UNO2D/Cardback.jpg</file>
     </qresource>
 </RCC>

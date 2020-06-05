@@ -42,6 +42,7 @@ MainWindow::MainWindow(QWidget *parent)
 
         });
     });
+
     //model2按钮
     MyPushButton *model2Btn=new MyPushButton(":/UNO2D/model2.png");
     model2Btn->setParent(this);
@@ -53,6 +54,7 @@ MainWindow::MainWindow(QWidget *parent)
         model2Btn->zoom1();
         model2Btn->zoom2();
     });
+
     MyPushButton *linkBtn=new MyPushButton(":/UNO2D/link.png");
     linkBtn->setParent(this);
     linkBtn->move(this->width()*0.5-linkBtn->width()*0.5,this->height()*0.45);
@@ -63,6 +65,7 @@ MainWindow::MainWindow(QWidget *parent)
         linkBtn->zoom1();
        linkBtn->zoom2();
     });
+    
     //退出按钮
     MyPushButton *quitBtn=new MyPushButton(":/UNO2D/quit.png");
     quitBtn->setParent(this);

@@ -14,21 +14,17 @@ class myGameWindow : public QMainWindow
 private:
     int gameType;
     int playerNum;
-    QVector<CardWidget*> MyCards;
-    QVector<PlayerWidget*> players;
+    QVector<PlayerWidget *> players;
 
 public:
     explicit myGameWindow(QWidget *parent = nullptr);
-    explicit myGameWindow(int gameType,int playerNum, QWidget *parent = nullptr);
+    explicit myGameWindow(int gameType, int playerNum, QWidget *parent = nullptr);
     void showCards();
+
+    QVector<CardWidget *> MyCards;
 
 protected:
     virtual void paintEvent(QPaintEvent *event);
-
-signals:
-
-public slots:
-
 };
 
 #endif // MYGAMEWINDOW_H

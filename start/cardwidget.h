@@ -13,14 +13,15 @@ private:
     bool isShow;
     bool isClick;
     bool isSelected;
-    int id;         // 0-14, for 0-9 and Drawtwo, Reverse, Skip
-                    // 13 for Wild, 14 for DrawFour
-    int color;      // 0-3, for blue, green, red, yellow
+    int id;    // 0-14, for 0-9 and Drawtwo, Reverse, Skip
+               // 13 for Wild, 14 for DrawFour
+    int color; // 0-3, for blue, green, red, yellow
     QPixmap backpix;
     QPixmap pix;
+
 public:
     explicit CardWidget(QWidget *parent = nullptr);
-    CardWidget(int id,int color, bool isShow, QWidget *parent = nullptr);
+    CardWidget(int id, int color, bool isShow, QWidget *parent = nullptr);
     void setClick(bool b);
     void setSelected(bool b);
 
@@ -28,10 +29,11 @@ public:
 
 protected:
     void paintEvent(QPaintEvent *event);
-
+    void mousePressEvent(QMouseEvent* event);
 signals:
 
 public slots:
+
 };
 
 #endif // CARDWIDGET_H

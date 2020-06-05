@@ -3,45 +3,45 @@
 #include "UNOConstants.h"
 using namespace std;
 
-class UNOCard:public UNOConstants
+class UNOCard : public UNOConstants
 {
-	public:
+public:
 	int cardColor;
 	string value;
 	int type;
 	UNOCard()
 	{
 	}
-	UNOCard(int cardcolor,int cardType,string cardValue)
+	UNOCard(int cardcolor, int cardType, string cardValue)
 	{
-		this->cardColor=cardcolor;
-		this->value=cardValue;
-		this->type=cardType;
+		this->cardColor = cardcolor;
+		this->value = cardValue;
+		this->type = cardType;
 	}
-	void setColor(int newColor) 
+	void setColor(int newColor)
 	{
 		this.cardColor = newColor;
 	}
 
-    int getColor() 
+	int getColor()
 	{
 		return cardColor;
 	}
 
-	void setValue(string newValue) 
+	void setValue(string newValue)
 	{
-		this.value = newValue;		
+		this.value = newValue;
 	}
 
-	string getValue() 
+	string getValue()
 	{
 		return value;
 	}
-	void setType(int newType) 
+	void setType(int newType)
 	{
 		this.type = newType;
 	}
-	int getType() 
+	int getType()
 	{
 		return type;
 	}

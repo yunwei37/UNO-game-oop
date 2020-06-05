@@ -1,6 +1,6 @@
 #include <iostream>
-#include<vector>
-#inlcude <stack>
+#include <vector>
+#inlcude < stack>
 #include <string>
 #include "UNOCard.h"
 
@@ -8,22 +8,22 @@ using namespace std;
 
 class Player
 {
-	public:
+public:
 	vector<UNOCard> myCards;
-	
-	protected:
+
+protected:
 	string name;
 	bool isMyturn = false;
 	bool saidUNO = false;
 	int playedcards = 0;
-	
-	public:
+
+public:
 	Player()
 	{
 	}
 	Player(string player)
 	{
-		name=player;
+		name = player;
 	}
 	string getName()
 	{
@@ -43,24 +43,24 @@ class Player
 	}
 	bool hasCard(UNOCard thisCard)
 	{
-		return (count(myCards.begin(),myCards.end(),thisCard))? true : false;		
+		return (count(myCards.begin(), myCards.end(), thisCard)) ? true : false;
 	}
 	void removeCard(UNOCard thisCard)
 	{
-		vector<UNOCard>::iterator newEnd(remove(myCards.begin(),myCards.end(),thisCard));
-        myCards.erase(newEnd,myCards.end());
+		vector<UNOCard>::iterator newEnd(remove(myCards.begin(), myCards.end(), thisCard));
+		myCards.erase(newEnd, myCards.end());
 		playedCards++;
 	}
 	int totalPlayedCards()
 	{
 		return playedCards;
 	}
-	
+
 	void toggleTurn()
 	{
 		isMyTurn = (isMyTurn) ? false : true;
 	}
-	
+
 	bool isMyTurn()
 	{
 		return isMyTurn;
@@ -73,12 +73,12 @@ class Player
 	{
 		return saidUNO;
 	}
-	
+
 	void saysUNO()
 	{
 		saidUNO = true;
 	}
-	
+
 	void setSaidUNOFalse()
 	{
 		saidUNO = false;
