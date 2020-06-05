@@ -11,7 +11,8 @@ class ActionCard: public UNOCard
 	public:
 	ActionCard()
 	{
-	}	
+	}
+		
 	ActionCard(Color cardColor, String cardValue):UNOCard(cardColor,ACTION, cardValue)
 	{	
 	}	

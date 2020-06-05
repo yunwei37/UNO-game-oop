@@ -19,12 +19,18 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     mypushbutton.cpp \
-    mysetwindow.cpp
+    mysetwindow.cpp \
+    cardwidget.cpp \
+    mygamewindow.cpp \
+    playerwidget.cpp
 
 HEADERS += \
     mainwindow.h \
     mypushbutton.h \
-    mysetwindow.h
+    mysetwindow.h \
+    cardwidget.h \
+    mygamewindow.h \
+    playerwidget.h
 
 FORMS += \
     mainwindow.ui

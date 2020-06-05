@@ -21,11 +21,13 @@ MainWindow::MainWindow(QWidget *parent)
     model1Btn->setParent(this);
     model1Btn->move(this->width()*0.5-model1Btn->width()*0.5,this->height()*0.25);
      msw =new  mysetwindow;
+
      connect(msw,&mysetwindow::mysetBack,this,[=]()
      {
          msw->hide();
          this->show();
      });
+
     connect(model1Btn,&MyPushButton::clicked,[=]()
     {
         qDebug()<<"点击了模式1";
