@@ -1,6 +1,9 @@
+#ifndef PLAYER_H
+#define PLAYER_H
+ 
 #include <iostream>
-#include <vector>
-#inlcude < stack>
+#include<vector>
+#inlcude <stack>
 #include <string>
 #include "UNOCard.h"
 
@@ -8,79 +11,48 @@ using namespace std;
 
 class Player
 {
-public:
+	public:
+	
 	vector<UNOCard> myCards;
-
-protected:
+	
+	protected:
+	
 	string name;
 	bool isMyturn = false;
 	bool saidUNO = false;
 	int playedcards = 0;
-
-public:
-	Player()
-	{
-	}
-	Player(string player)
-	{
-		name = player;
-	}
-	string getName()
-	{
-		return this->name;
-	}
-	void obtainCard(UNOCard card)
-	{
-		vec.push_back(card);
-	}
-	vector<UNOCard> getAllCard()
-	{
-		return myCards;
-	}
-	int getTotalCards()
-	{
-		return myCards.size();
-	}
-	bool hasCard(UNOCard thisCard)
-	{
-		return (count(myCards.begin(), myCards.end(), thisCard)) ? true : false;
-	}
-	void removeCard(UNOCard thisCard)
-	{
-		vector<UNOCard>::iterator newEnd(remove(myCards.begin(), myCards.end(), thisCard));
-		myCards.erase(newEnd, myCards.end());
-		playedCards++;
-	}
-	int totalPlayedCards()
-	{
-		return playedCards;
-	}
-
-	void toggleTurn()
-	{
-		isMyTurn = (isMyTurn) ? false : true;
-	}
-
-	bool isMyTurn()
-	{
-		return isMyTurn;
-	}
-	bool hasCards()
-	{
-		return (myCards.size()) ? true : false;
-	}
-	bool getSaidUNO()
-	{
-		return saidUNO;
-	}
-
-	void saysUNO()
-	{
-		saidUNO = true;
-	}
-
-	void setSaidUNOFalse()
-	{
-		saidUNO = false;
-	}
+	
+	public:
+	
+	Player();
+	
+	Player(string player);
+	
+	string getName();
+	
+	void obtainCard(UNOCard card);
+	
+	vector<UNOCard> getAllCard();
+	
+	int getTotalCards();
+	
+	bool hasCard(UNOCard thisCard);
+	
+	void removeCard(UNOCard thisCard);
+	
+	int totalPlayedCards();
+	
+	void toggleTurn();
+	
+	bool isMyTurn();
+	
+	bool hasCards();
+	
+	bool getSaidUNO();
+	
+	void saysUNO();
+	
+	void setSaidUNOFalse();
 };
+
+#endif

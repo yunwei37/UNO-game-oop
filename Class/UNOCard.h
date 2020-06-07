@@ -1,48 +1,33 @@
+#ifndef UNOCard_H
+#define UNOCard_H
+
 #include <iostream>
 #include <string>
 #include "UNOConstants.h"
 using namespace std;
 
-class UNOCard : public UNOConstants
+class UNOCard:public UNOConstants
 {
-public:
+	public:
+	
 	int cardColor;
 	string value;
 	int type;
-	UNOCard()
-	{
-	}
-	UNOCard(int cardcolor, int cardType, string cardValue)
-	{
-		this->cardColor = cardcolor;
-		this->value = cardValue;
-		this->type = cardType;
-	}
-	void setColor(int newColor)
-	{
-		this.cardColor = newColor;
-	}
-
-	int getColor()
-	{
-		return cardColor;
-	}
-
-	void setValue(string newValue)
-	{
-		this.value = newValue;
-	}
-
-	string getValue()
-	{
-		return value;
-	}
-	void setType(int newType)
-	{
-		this.type = newType;
-	}
-	int getType()
-	{
-		return type;
-	}
+	
+	UNOCard();
+	
+	UNOCard(int cardcolor,int cardType,string cardValue);
+	
+	void setColor(int newColor);
+    
+	int getColor() ;
+	
+	void setValue(string newValue) ;
+	
+	string getValue() ;
+	
+	void setType(int newType) ;
+	
+	int getType() ;
 };
+#endif
