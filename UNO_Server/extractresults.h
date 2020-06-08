@@ -9,24 +9,50 @@
 #include <string>
 #include <utility>
 
+
 class ExtractResult{
-protected:
-    int typeId;
-    bool success;
 public:
-    explicit ExtractResult(bool success=true) : success(success), typeId(-1) {};
-    bool isSuccess() const{
-        return success;
-    }
-    int getTypeId() const{
-        return typeId;
+    enum TYPE{JOINROOM, JOINACK, NEWPLAYER, PLAYERLEAVE, GAMESTART, KEEPALIVE_CLIENT, KEEPALIVE_SERVER, ERROR};
+
+    const TYPE type;
+    
+    explicit ExtractResult(TYPE type) : type(type) {};
+    int getType() const{
+        return type;
     }
 
 };
+
+
+class ResultError : public ExtractResult{
+protected:
+    std::string message;
+
+public:
+    explicit ResultError(std::string message) : ExtractResult(TYPE::ERROR), message(std::move(message)) {}
+    const std::string &getMessage() const {
+        return message;
+    }
+
+};
+
+class ResultJoinRoom : public ExtractResult{
+protected:
+    std::string player_name;
+    
+public:
+    explicit ResultJoinRoom(std::string playerName) : ExtractResult(TYPE::JOINROOM), player_name(std::move(playerName)) {}
+    const std::string &getPlayerName() const {
+        return player_name;
+    }
+
+};
+
 class ResultJoinACK : public ExtractResult{
 protected:
+    std::map<int, std::string> player_map;
     int player_count, assigned_player_id;
-    const static int typeId = 0;
+
 public:
     int getPlayerCount() const {
         return player_count;
@@ -39,14 +65,15 @@ public:
     const std::map<int, std::string> &getPlayerMap() const {
         return player_map;
     }
-
-protected:
-    std::map<int, std::string> player_map;
-public:
-    ResultJoinACK(int player_count, int assigned_player_id, std::map<int, std::string> player_map) : player_count(player_count), assigned_player_id(assigned_player_id){
+    ResultJoinACK(int player_count, int assigned_player_id, std::map<int, std::string> player_map) :
+    ExtractResult(TYPE::JOINACK), player_count(player_count), assigned_player_id(assigned_player_id){
         this->player_map = std::move(player_map);
+    }
+
+    ~ResultJoinACK() {
+        puts("fuck");
     };
-    explicit ResultJoinACK(bool success) : ExtractResult(success), player_count(-1), assigned_player_id(-1) {};
+
 };
 
 class ResultNewPlayer: public ExtractResult{
@@ -62,17 +89,15 @@ public:
     }
 
     ResultNewPlayer(int newPlayerId, std::string newPlayerName) :
-        new_player_id(newPlayerId), new_player_name(std::move(newPlayerName)) {}
+        ExtractResult(TYPE::NEWPLAYER), new_player_id(newPlayerId), new_player_name(std::move(newPlayerName)) {}
 
-    explicit ResultNewPlayer(bool success) : ExtractResult(success), new_player_id(-1) {};
 };
 class ResultPlayerLeave: public ExtractResult{
 protected:
     int player_id;
 
 public:
-    explicit ResultPlayerLeave(int playerId) : player_id(playerId) {}
-    explicit ResultPlayerLeave(bool success) : ExtractResult(success), player_id(-1) {};
+    explicit ResultPlayerLeave(int playerId) : ExtractResult(TYPE::PLAYERLEAVE), player_id(playerId) {}
     int getPlayerId() const {
         return player_id;
     }
@@ -80,7 +105,7 @@ public:
 
 class ResultServerKeepAlive: public ExtractResult{
 public:
-    explicit ResultServerKeepAlive(bool success=true) : ExtractResult(success) {};
+    ResultServerKeepAlive() : ExtractResult(TYPE::KEEPALIVE_SERVER) {};
 
 };
 
@@ -89,8 +114,7 @@ protected:
     int player_id;
 
 public:
-    explicit ResultClientKeepAlive(int playerId) : player_id(playerId) {}
-    explicit ResultClientKeepAlive(bool success) : ExtractResult(success), player_id(-1) {};
+    explicit ResultClientKeepAlive(int playerId=-1) : ExtractResult(TYPE::KEEPALIVE_CLIENT), player_id(playerId) {}
     int getPlayerId() const {
         return player_id;
     }
@@ -98,9 +122,7 @@ public:
 
 class ResultGameStart: public ExtractResult{
 public:
-    explicit ResultGameStart(bool success=true) : ExtractResult(success){
-        typeId = 1;
-    };
+    ResultGameStart() : ExtractResult(TYPE::GAMESTART) {};
 };
 
 

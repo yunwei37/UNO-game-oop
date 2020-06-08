@@ -12,7 +12,7 @@
 
 其他的游戏参与者需要进入房间，进入房间时向游戏房间的创建者告知自己已经加入，并携带自己的`player_name`，由服务端保存
 
-* 客户端：`Join <player_name>`
+* 客户端：`JOIN_ROOM <player_name>`
 
 若房间未满，服务端向客户端回应确认加入的数据包，分配`player_id`，并在回应数据包中携带当前的玩家数量`player_count`（包含当前玩家）、当前玩家的列表（包含当前玩家）。
 
@@ -45,13 +45,18 @@ EOF
 
 `PLAYERLEAVE <player_id>`
 
-游戏房间创建者启动游戏时，也向所有玩家进行广播
+游戏房间创建者启动游戏时，也向所有玩家进行广播`GAMESTART`
 
-* 服务端广播：
+|Message|FactoryParam|ExtractorReturn|
+|:---:|:---:|:---:|
+|JOIN_ROOM|p|
+|JOIN_ACK|
+|NEWPLAYER|
+|PLAYERLEAVE|
+|GAMESTART|
+|CLIENTKEEPALIVE|
+|SERVERKEEPALIVE|
 
-  ```
-  GAMESTART
-  ```
 
   
 

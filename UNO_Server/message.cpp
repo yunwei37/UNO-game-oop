@@ -7,16 +7,18 @@
 #include "string.h"
 #include <map>
 #include <string>
-const char* JOINACK_HEADER_FORMAT = "JOIN_ACK %d %d\n";
-const char* PLAYERLIST_ITEM_FORMAT = "%d %s\n";
-const char* NEWPLAYER_MESSAGE_FORMAT = "NEWPLAYER %d %s";
-const char* PLAYERLEAVE_MESSAGE_FORMAT = "PLAYERLEAVE %d";
-const char* GAMESTART_MESSAGE_FORMAT = "GAMESTART";
-const char* KEEPALIVE_CLIENT_MESSAGE_FORMAT = "CLIENTKEEPALIVE %d";
-const char* KEEPALIVE_SERVER_MESSAGE_FORMAT = "SERVERKEEPALIVE";
 
-const char* MESSAGE_ERROR = "ERROR";
+std::string MessageFactory::join_room_factory(std::string player_name) {
+    char message[128];
+    sscanf(message, MESSAGEFORMAT_JOINROOM, player_name.c_str());
+    return std::string(message);
+}
 
+ExtractResult* MessageExtractor::join_room_extractor(const char *message) {
+    char player_name_buf[128];
+    sscanf(message, MESSAGEFORMAT_JOINROOM, player_name_buf);
+    return new ResultJoinRoom(std::string(player_name_buf));
+}
 
 std::string MessageFactory::join_ack_factory(const int player_count, const int player_id, std::map<int, std::string> & player_map){
     if(player_count<=0 or player_id<0 or player_map.empty()
@@ -25,9 +27,9 @@ std::string MessageFactory::join_ack_factory(const int player_count, const int p
 
     char message[1024], buf[128];
 
-    sprintf(message, JOINACK_HEADER_FORMAT, player_count, player_id);
+    sprintf(message, MESSAGEFORMAT_JOINACK_HEADER, player_count, player_id);
     for(auto &i : player_map){
-        sprintf(buf, PLAYERLIST_ITEM_FORMAT, i.first, i.second.c_str());
+        sprintf(buf, MESSAGEFORMAT_PLAYERLIST_ITEM, i.first, i.second.c_str());
         strcat(message, buf);
     }
 
@@ -36,12 +38,9 @@ std::string MessageFactory::join_ack_factory(const int player_count, const int p
 
 }
 
-ResultJoinACK MessageExtractor::join_ack_extractor(const char* message) {
+ExtractResult* MessageExtractor::join_ack_extractor(const char* message) {
     int player_count, assigned_player_id;
-
-    if(sscanf(message, JOINACK_HEADER_FORMAT, &player_count, &assigned_player_id)!=2)
-        return ResultJoinACK(false);
-
+    sscanf(message, MESSAGEFORMAT_JOINACK_HEADER, &player_count, &assigned_player_id);
 
     const char* player_list_item = strchr(message, '\n') + 1;
     //fisrt item
@@ -53,69 +52,95 @@ ResultJoinACK MessageExtractor::join_ack_extractor(const char* message) {
     std::string player_name;
 
     for(int i=1; i<=player_count; ++i){
-        if(sscanf(player_list_item, PLAYERLIST_ITEM_FORMAT, &player_id, player_name_buf)!=2)
-            return ResultJoinACK(false);
-
+        sscanf(player_list_item, MESSAGEFORMAT_PLAYERLIST_ITEM, &player_id, player_name_buf);
         player_map[player_id] = std::string(player_name_buf);
         //get next item in the list
         player_list_item = strchr(player_list_item, '\n') + 1;
     }
 
-    return ResultJoinACK(player_count, assigned_player_id, player_map);
+    return new ResultJoinACK(player_count, assigned_player_id, player_map);
 }
 
-ResultNewPlayer MessageExtractor::newplayer_extractor(const char * message) {
+ExtractResult* MessageExtractor::newplayer_extractor(const char * message) {
     int player_id;
     char player_name_buf[128];
-    sscanf(message, NEWPLAYER_MESSAGE_FORMAT, &player_id, &player_name_buf);
-    return ResultNewPlayer(player_id, std::string(player_name_buf));
+    sscanf(message, MESSAGEFORMAT_NEWPLAYER, &player_id, &player_name_buf);
+    return new ResultNewPlayer(player_id, std::string(player_name_buf));
 }
 
 
 std::string MessageFactory::newplayer_factory(int new_player_id, std::string player_name) {
     char message[128];
-    sprintf(message, NEWPLAYER_MESSAGE_FORMAT, new_player_id, player_name.c_str());
+    sprintf(message, MESSAGEFORMAT_NEWPLAYER, new_player_id, player_name.c_str());
     return std::string(message);
 }
 
-ResultPlayerLeave MessageExtractor::playerleave_extractor(const char *message) {
+ExtractResult* MessageExtractor::playerleave_extractor(const char *message) {
     int player_id;
-    sscanf(message, PLAYERLEAVE_MESSAGE_FORMAT, &player_id);
-    return ResultPlayerLeave(player_id);
+    sscanf(message, MESSAGEFORMAT_PLAYERLEAVE, &player_id);
+    return new ResultPlayerLeave(player_id);
 }
 
 std::string MessageFactory::playerleave_factory(int player_id) {
     char message[128];
-    sprintf(message, PLAYERLEAVE_MESSAGE_FORMAT, player_id);
+    sprintf(message, MESSAGEFORMAT_PLAYERLEAVE, player_id);
     return std::string(message);
 }
 
 std::string MessageFactory::gamestart_factory() {
-    return std::string(GAMESTART_MESSAGE_FORMAT);
+    return std::string(MESSAGEFORMAT_GAMESTART);
 }
 
 std::string MessageFactory::server_keepalive_factory() {
-    return std::string(KEEPALIVE_SERVER_MESSAGE_FORMAT);
+    return std::string(MESSAGEFORMAT_KEEPALIVE_SERVER);
 }
 
-ResultGameStart MessageExtractor::gamestart_extractor() {
-    return ResultGameStart();
+ExtractResult* MessageExtractor::gamestart_extractor() {
+    return new ResultGameStart();
 }
 
 std::string MessageFactory::client_keepalive_factory(int player_id) {
     char message[128];
-    sprintf(message, KEEPALIVE_CLIENT_MESSAGE_FORMAT, player_id);
+    sprintf(message, MESSAGEFORMAT_KEEPALIVE_CLIENT, player_id);
     return std::string(message);
 }
 
-ResultClientKeepAlive MessageExtractor::client_keepalive_extractor(const char *message) {
+ExtractResult* MessageExtractor::client_keepalive_extractor(const char *message) {
     int player_id;
-    sscanf(message, KEEPALIVE_CLIENT_MESSAGE_FORMAT, &player_id);
-    return ResultClientKeepAlive(player_id);
+    sscanf(message, MESSAGEFORMAT_KEEPALIVE_CLIENT, &player_id);
+    return new ResultClientKeepAlive(player_id);
 }
 
 
-ResultServerKeepAlive MessageExtractor::server_keepalive_extractor() {
-    return ResultServerKeepAlive();
+ExtractResult* MessageExtractor::server_keepalive_extractor() {
+    return new ResultServerKeepAlive();
 }
+
+ExtractResult* MessageExtractor::handleMessage(const char *message) {
+    char identifier[32];
+    sscanf(message,"%s", identifier);
+
+    puts(identifier);
+    auto identify = [identifier](const char* IDENTIFIER) -> bool {return 0==strcmp(identifier, IDENTIFIER);};
+
+    if(identify(IDENTIFIER_GAMESTART))
+       return MessageExtractor::gamestart_extractor();
+    else if(identify(IDENTIFIER_KEEPALIVE_SERVER))
+        return MessageExtractor::server_keepalive_extractor();
+    else if(identify(IDENTIFIER_KEEPALIVE_CLIENT))
+        return MessageExtractor::client_keepalive_extractor(message);
+    else if(identify(IDENTIFIER_JOINACK))
+        return MessageExtractor::join_ack_extractor(message);
+    else if(identify(IDENTIFIER_JOINROOM))
+        return MessageExtractor::join_room_extractor(message);
+    else if(identify(IDENTIFIER_NEWPLAYER))
+        return MessageExtractor::newplayer_extractor(message);
+    else if(identify(IDENTIFIER_PLAYERLEAVE))
+        return MessageExtractor::playerleave_extractor(message);
+    else
+        return new ResultError("Unkown Identifier: " + std::string(identifier));
+
+
+}
+
 

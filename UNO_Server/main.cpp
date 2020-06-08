@@ -2,17 +2,16 @@
 #include <map>
 #include "string.h"
 #include "message.h"
-#include <map>
 #include <assert.h>
 
 void test(){
 
-    int a1 = ExtractResult(true).getTypeId();
-    ResultGameStart ann;
-    ExtractResult bnn;
-    std::cout<<bnn.getTypeId();
-    bnn = (ExtractResult)ann;
-    std::cout<<bnn.getTypeId();
+
+    ResultGameStart t1 = ResultGameStart();
+    ExtractResult t2 = (ResultGameStart)t1;
+    assert(t1.getType() == t2.getType());
+    assert(MessageExtractor::handleMessage("GAMESTART")->getType() == t2.getType());
+
 
     std::map<int, std::string> player_map{
             {0, "tom"},
@@ -20,36 +19,37 @@ void test(){
             {3, "tooom"}
     };
 
+    ExtractResult *res;
     std::string msg;
 
     msg = MessageFactory::join_ack_factory(player_map.size(), 4, player_map);
-    puts(msg.c_str());
-    ResultJoinACK resultJoinAck = MessageExtractor::join_ack_extractor(msg.c_str());
-    assert(resultJoinAck.isSuccess());
-    assert(resultJoinAck.getAssignedPlayerId()==4);
-    assert(resultJoinAck.getPlayerCount()==player_map.size());
-    assert(resultJoinAck.getPlayerMap().find(3)->second=="tooom");
+    std::cout<<msg;
+    res = MessageExtractor::handleMessage(msg.c_str());
+    ResultJoinACK *resultJoinAck = (ResultJoinACK*) res;
+    assert(resultJoinAck->getAssignedPlayerId()==4);
+    assert(resultJoinAck->getPlayerCount()==player_map.size());
+    assert(resultJoinAck->getPlayerMap().find(3)->second=="tooom");
 
 
     msg = MessageFactory::newplayer_factory(5, "tooooom");
-    puts(msg.c_str());
-    ResultNewPlayer resultNewPlayer = MessageExtractor::newplayer_extractor(msg.c_str());
-    assert(resultNewPlayer.isSuccess());
-    assert(resultNewPlayer.getNewPlayerId()==5);
-    assert(resultNewPlayer.getNewPlayerName()=="tooooom");
+    std::cout<<msg;
+    res = MessageExtractor::handleMessage(msg.c_str());
+    ResultNewPlayer *resultNewPlayer = (ResultNewPlayer*) res;
+    assert(resultNewPlayer->getNewPlayerId()==5);
+    assert(resultNewPlayer->getNewPlayerName()=="tooooom");
 
     msg = MessageFactory::client_keepalive_factory(5);
-    puts(msg.c_str());
-    ResultClientKeepAlive resultClientKeepAlive = MessageExtractor::client_keepalive_extractor(msg.c_str());
-    assert(resultClientKeepAlive.isSuccess());
-    assert(resultClientKeepAlive.getPlayerId()==5);
+    std::cout<<msg;
+    res = MessageExtractor::handleMessage(msg.c_str());
+    ResultClientKeepAlive *resultClientKeepAlive = (ResultClientKeepAlive*) res;
+    assert(resultClientKeepAlive->getPlayerId()==5);
 
 
     msg = MessageFactory::playerleave_factory(5);
-    puts(msg.c_str());
-    ResultPlayerLeave resultPlayerLeave = MessageExtractor::playerleave_extractor(msg.c_str());
-    assert(resultPlayerLeave.isSuccess());
-    assert(resultPlayerLeave.getPlayerId()==5);
+    std::cout<<msg;
+    res = MessageExtractor::handleMessage(msg.c_str());
+    ResultPlayerLeave *resultPlayerLeave = (ResultPlayerLeave*) res;
+    assert(resultPlayerLeave->getPlayerId()==5);
 
 }
 int main() {
