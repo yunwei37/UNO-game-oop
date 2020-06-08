@@ -36,8 +36,8 @@ EOF
 
 此时启动双向心跳检测：
 
-* 服务端广播：`ServerKeepalive `
-* 客户端广播：`Keepalive <player_id>`
+* 服务端广播：`SERVERKEEPALIVE`
+* 客户端广播：`CLIENTKEEPALIVE <player_id>`
 
 若发生客户端检测到服务端掉线，则直接返回开始界面
 
@@ -50,7 +50,7 @@ EOF
 * 服务端广播：
 
   ```
-  Gamestart <player_count>
+  GAMESTART
   ```
 
   
