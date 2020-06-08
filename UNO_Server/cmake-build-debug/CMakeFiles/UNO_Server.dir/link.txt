@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/UNO_Server.dir/message.cpp.o CMakeFiles/UNO_Server.dir/main.cpp.o  -o UNO_Server 

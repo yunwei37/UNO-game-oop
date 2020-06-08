@@ -1,0 +1,40 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/ubuntu/CLionProjects/UNO_Server/extractresults.h
+map
+-
+string
+-
+utility
+-
+
+/home/ubuntu/CLionProjects/UNO_Server/main.cpp
+iostream
+-
+map
+-
+string.h
+/home/ubuntu/CLionProjects/UNO_Server/string.h
+message.h
+/home/ubuntu/CLionProjects/UNO_Server/message.h
+map
+-
+assert.h
+-
+
+/home/ubuntu/CLionProjects/UNO_Server/message.h
+string
+-
+map
+-
+utility
+-
+extractresults.h
+/home/ubuntu/CLionProjects/UNO_Server/extractresults.h
+

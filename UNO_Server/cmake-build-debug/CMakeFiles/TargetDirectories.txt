@@ -1,0 +1,3 @@
+/home/ubuntu/CLionProjects/UNO_Server/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/ubuntu/CLionProjects/UNO_Server/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/ubuntu/CLionProjects/UNO_Server/cmake-build-debug/CMakeFiles/UNO_Server.dir
