@@ -1,9 +1,9 @@
 #ifndef GAME_H
-#define GAME_H 
+#define GAME_H
 
 #include <iostream>
 #include <vector>
-#inlcude <stack>
+#inlcude < stack>
 #include <string>
 
 #include "UNOCard.h"
@@ -20,25 +20,22 @@
 
 using namespace std;
 
-class Game: public GameConstants
+class Game : public GameConstants
 {
-	private:
-	
+private:
 	vector<Player> players;
-    stack<UNOCard> cardStack;
+	stack<UNOCard> cardStack;
 	bool isOver;
 	int GAMEMODE;
 	PC *pc;
 	Dealer *dealer;
-	
-	
-	public:
-	
+
+public:
 	Game(int Mode);
 	vector<Player> getPlayers();
 	UNOCard getCard();
 	void removePlayedCard(UNOCard playedCard);
-	void drawCard(UNOCard topCard) ;
+	void drawCard(UNOCard topCard);
 	void switchTurn();
 	//Draw cards x times
 	void drawPlus(int times);
@@ -50,12 +47,11 @@ class Game: public GameConstants
 	//Check if this card can be played
 	bool canPlay(UNOCard topCard, UNOCard newCard);
 	//Check whether the player said or forgot to say UNO
-	void checkUNO() ;
-	void setSaidUNO() ;
+	void checkUNO();
+	void setSaidUNO();
 	bool isPCsTurn();
 	//if it's PC's turn, play it for pc
 	void playPC(UNOCard topCard);
 };
-
 
 #endif

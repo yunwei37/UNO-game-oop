@@ -4,15 +4,16 @@
 #include "UNOConstants.h"
 using namespace std;
 
-class ActionCard: public UNOCard
-{	
-	private:
+class ActionCard : public UNOCard
+{
+private:
 	int Function = 0;
-	public:
+
+public:
 	ActionCard()
 	{
-	}	
-	ActionCard(Color cardColor, String cardValue):UNOCard(cardColor,ACTION, cardValue)
-	{	
-	}	
+	}
+	ActionCard(Color cardColor, String cardValue) : UNOCard(cardColor, ACTION, cardValue)
+	{
+	}
 }

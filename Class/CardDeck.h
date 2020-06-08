@@ -2,32 +2,28 @@
 #define CardDeck_H
 
 #include <iostream>
-#include<vector>
-#inlcude <stack>
+#include <vector>
+#inlcude < stack>
 #include <string>
 #include "UNOCard.h"
 #include "GameConstants.h"
 
 using namespace std;
 
-class CardDeck: public GameConstants
+class CardDeck : public GameConstants
 {
-	private:
-	
+private:
 	vector<NumberCard> numberCards;
-    vector<ActionCard> actionCards;
+	vector<ActionCard> actionCards;
 	vector<WildCard> wildCards;
 	vector<UNOCard> UNOcards;
-	
-	
-	public:
-	
-	CardDeck();
-	
-	void addCards();
-	
-	vector<UNOCard> getCards();
 
+public:
+	CardDeck();
+
+	void addCards();
+
+	vector<UNOCard> getCards();
 };
 
 #endif

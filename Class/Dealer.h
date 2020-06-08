@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <vector>
-#inlcude <stack>
+#include <stack>
 #include <cstdlib>
 #include <time>
 #include "UNOCard.h"
@@ -12,23 +12,21 @@
 
 using namespace std;
 
-class Dealer :public GameConstants
+class Dealer : public GameConstants
 {
-	private:
+private:
 	CardDeck cardDeck;
-    stack<UNOCard>  CardStack;
-    
-	public:
-	
-	Dealer();	
-    //shuffle cards	
-	
+	stack<UNOCard> CardStack;
+
+public:
+	Dealer();
+	//shuffle cards
+
 	stack<UNOCard> shuffle();
-	
+
 	//spread out cards to players
-	void spreadOut(vector<Player>&players);
-	
+	void spreadOut(vector<Player> &players);
+
 	UNOCard getCard();
-	
 };
 #endif

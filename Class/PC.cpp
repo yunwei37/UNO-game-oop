@@ -1,59 +1,59 @@
 #include <iostream>
-#include<vector>
-#inlcude <stack>
+#include <vector>
+#include < stack>
 #include "UNOCard.h"
 #include "WildCard.h"
 #include "GameConstants.h"
-#include  "PC.h"
+#include "PC.h"
 
 using namespace std;
 
-	PC::PC() 
+PC::PC()
+{
+	setName("PC");
+}
+PC::PC(Player player)
+{
+}
+//PC plays a card
+bool PC::play(UNOCard topCard)
+{
+	bool done = false;
+	Color color = topCard.getColor();
+	String value = topCard.getValue();
+
+	if (topCard.getType() == WILD)
 	{
-		setName("PC");
+		color = ((WildCard)topCard).getWildColor();
 	}
-    PC::PC(Player player) 
+	for (UNOCard card : getAllCards())
 	{
-	}
-	//PC plays a card
-	bool PC::play(UNOCard topCard) 
-	{
-		bool done = false;
-		Color color = topCard.getColor();
-		String value = topCard.getValue();
-		
-		if(topCard.getType()==WILD)
+		if (card.getColor().equals(color) || card.getValue().equals(value))
 		{
-			color = ((WildCard) topCard).getWildColor();			
+			//
+			playthiscard(card); //still wait to realize
+			//
+			done = true;
+			break;
 		}
-		for (UNOCard card : getAllCards()) 
+	}
+
+	// if no card was found, play wild card
+	if (!done)
+	{
+		for (UNOCard card : getAllCards())
 		{
-			if (card.getColor().equals(color) || card.getValue().equals(value)) 
-			{	
-				//
-				playthiscard(card);   //still wait to realize
-				//
+			if (card.getType() == WILD)
+			{
+				////////////
+				playthiscard(card);
+				////////////
 				done = true;
 				break;
 			}
 		}
-
-		// if no card was found, play wild card
-		if (!done) 
-		{
-			for (UNOCard card : getAllCards()) 
-			{
-				if (card.getType() == WILD) 
-				{
-					////////////
-					playthiscard(card);
-					////////////
-					done = true;
-					break;
-				}
-			}
-		}
-		if(getTotalCards()==1 || getTotalCards()==2)
-			saysUNO();
-		return done;
 	}
+	if (getTotalCards() == 1 || getTotalCards() == 2)
+		saysUNO();
+	return done;
+}

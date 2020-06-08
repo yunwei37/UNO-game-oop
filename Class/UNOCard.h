@@ -6,28 +6,27 @@
 #include "UNOConstants.h"
 using namespace std;
 
-class UNOCard:public UNOConstants
+class UNOCard : public UNOConstants
 {
-	public:
-	
+public:
 	int cardColor;
 	string value;
 	int type;
-	
+
 	UNOCard();
-	
-	UNOCard(int cardcolor,int cardType,string cardValue);
-	
+
+	UNOCard(int cardcolor, int cardType, string cardValue);
+
 	void setColor(int newColor);
-    
-	int getColor() ;
-	
-	void setValue(string newValue) ;
-	
-	string getValue() ;
-	
-	void setType(int newType) ;
-	
-	int getType() ;
+
+	int getColor();
+
+	void setValue(string newValue);
+
+	string getValue();
+
+	void setType(int newType);
+
+	int getType();
 };
 #endif
