@@ -20,7 +20,7 @@
 定义的交互规范见下表
 
 | Identifier        | Factory                                                      | Extractor                                          | ExtractResult Class     |
-| :---------------- | :----------------------------------------------------------- | -------------------------------------------------- | :---------------------- |
+| :---------------- | :----------------------------------------------------------- | :------------------------------------------------- | :---------------------- |
 | `JOIN_ROOM`       | `join_room_factory(std::string)`                             | `join_room_extractor(const char * message)`        | `ResultJoinROOM`        |
 | `JOIN_ACK`        | `join_ack_factory(int player_count, int player_id, std::map<int, std::string> & player_map)` | `join_ack_extractor(const char * message)`         | `ResultJoinACK`         |
 | `NEWPLAYER`       | `newplayer_factory(int new_player_id, std::string player_name)` | `join_ack_extractor(const char * message)`         | `ResultNewPlayer`       |
