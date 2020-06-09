@@ -12,15 +12,13 @@
 
 class ExtractResult{
 public:
-    enum TYPE{JOINROOM, JOINACK, NEWPLAYER, PLAYERLEAVE, GAMESTART, KEEPALIVE_CLIENT, KEEPALIVE_SERVER, ERROR};
-
-    const TYPE type;
-    
+    enum TYPE{ERROR, JOINROOM, JOINACK, NEWPLAYER, PLAYERLEAVE, GAMESTART, KEEPALIVE_CLIENT, KEEPALIVE_SERVER, PLAYERACTION};
     explicit ExtractResult(TYPE type) : type(type) {};
     int getType() const{
         return type;
     }
-
+protected:
+    const TYPE type;
 };
 
 
@@ -69,10 +67,6 @@ public:
     ExtractResult(TYPE::JOINACK), player_count(player_count), assigned_player_id(assigned_player_id){
         this->player_map = std::move(player_map);
     }
-
-    ~ResultJoinACK() {
-        puts("fuck");
-    };
 
 };
 
@@ -125,5 +119,27 @@ public:
     ResultGameStart() : ExtractResult(TYPE::GAMESTART) {};
 };
 
+class ResultPlayerAction: public ExtractResult{
+protected:
+    int player_id;
+    int draw_card_id;
+    int put_card_id;
+
+public:
+    explicit ResultPlayerAction(int player_id, int draw_card_id=-1,int put_card_id=-1) :
+      ExtractResult(TYPE::PLAYERACTION), player_id(player_id), draw_card_id(draw_card_id), put_card_id(put_card_id){};
+
+    int getPlayerId() const {
+        return player_id;
+    }
+
+    int getDrawCardId() const {
+        return draw_card_id;
+    }
+
+    int getPutCardId() const {
+        return put_card_id;
+    }
+};
 
 #endif // UNO_EXTRACTRESULTS

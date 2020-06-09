@@ -17,6 +17,7 @@ static const char* IDENTIFIER_PLAYERLEAVE = "PLAYERLEAVE";
 static const char* IDENTIFIER_GAMESTART = "GAMESTART";
 static const char* IDENTIFIER_KEEPALIVE_CLIENT = "CLIENTKEEPALIVE";
 static const char* IDENTIFIER_KEEPALIVE_SERVER = "SERVERKEEPALIVE";
+static const char* IDENTIFIER_PLAYERACTION = "PLAYER_ACTION";
 
 
 static const char* MESSAGEFORMAT_JOINROOM = "JOIN_ROOM %s";
@@ -27,6 +28,8 @@ static const char* MESSAGEFORMAT_PLAYERLEAVE = "PLAYERLEAVE %d";
 static const char* MESSAGEFORMAT_GAMESTART = "GAMESTART";
 static const char* MESSAGEFORMAT_KEEPALIVE_CLIENT = "CLIENTKEEPALIVE %d";
 static const char* MESSAGEFORMAT_KEEPALIVE_SERVER = "SERVERKEEPALIVE";
+static const char* MESSAGEFORMAT_PLAYERACTION= "PLAYER_ACTION %d\nDRAWCARD %d\nPUTCARD %d\n";
+
 static const char* MESSAGE_ERROR = "ERROR";
 
 
@@ -39,6 +42,7 @@ public:
     static std::string gamestart_factory();
     static std::string client_keepalive_factory(int);
     static std::string server_keepalive_factory();
+    static std::string player_action_factory(int, int, int);
 
 };
 class MessageExtractor{
@@ -50,7 +54,9 @@ public:
     static ExtractResult* gamestart_extractor();
     static ExtractResult* client_keepalive_extractor(const char *);
     static ExtractResult* server_keepalive_extractor();
+    static ExtractResult* player_action_extractor(const char *);
     static ExtractResult* handleMessage(const char *);
+
 
 };
 

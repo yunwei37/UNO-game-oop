@@ -111,16 +111,28 @@ ExtractResult* MessageExtractor::client_keepalive_extractor(const char *message)
     return new ResultClientKeepAlive(player_id);
 }
 
-
 ExtractResult* MessageExtractor::server_keepalive_extractor() {
     return new ResultServerKeepAlive();
 }
+
+std::string MessageFactory::player_action_factory(int player_id, int draw_card_id, int put_card_id) {
+    char message[512];
+    sprintf(message, MESSAGEFORMAT_PLAYERACTION, player_id, draw_card_id, put_card_id);
+    return std::string(message);
+}
+
+ExtractResult* MessageExtractor::player_action_extractor(const char * message) {
+    int player_id, draw_card_id, put_card_id;
+    sscanf(message, MESSAGEFORMAT_PLAYERACTION, &player_id, &draw_card_id, &put_card_id);
+    return new ResultPlayerAction(player_id, draw_card_id, put_card_id);
+}
+
 
 ExtractResult* MessageExtractor::handleMessage(const char *message) {
     char identifier[32];
     sscanf(message,"%s", identifier);
 
-    puts(identifier);
+//    puts(identifier);
     auto identify = [identifier](const char* IDENTIFIER) -> bool {return 0==strcmp(identifier, IDENTIFIER);};
 
     if(identify(IDENTIFIER_GAMESTART))
@@ -137,6 +149,8 @@ ExtractResult* MessageExtractor::handleMessage(const char *message) {
         return MessageExtractor::newplayer_extractor(message);
     else if(identify(IDENTIFIER_PLAYERLEAVE))
         return MessageExtractor::playerleave_extractor(message);
+    else if(identify(IDENTIFIER_PLAYERACTION))
+        return MessageExtractor::player_action_extractor(message);
     else
         return new ResultError("Unkown Identifier: " + std::string(identifier));
 
