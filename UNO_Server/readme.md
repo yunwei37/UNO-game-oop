@@ -19,16 +19,16 @@
 
 定义的交互规范见下表
 
-|    Identifier     |   ExtractResult Class   | Factory                                                    | Extractor                      |        Factory Params / Extractor Returns        |
-| :---------------: | :---------------------: | ---------------------------------------------------------- | ------------------------------ | :----------------------------------------------: |
-|    `JOIN_ROOM`    |    `ResultJoinROOM`     | `join_room_factory(std::string)`                           | `join_room_extractor()`        |                  `player_name`                   |
-|    `JOIN_ACK`     |     `ResultJoinACK`     | `join_ack_factory(int, int, std::map<int, std::string> &)` | `join_ack_extractor()`         | `player_count` `assigned_player_id` `player_map` |
-|    `NEWPLAYER`    |    `ResultNewPlayer`    | `newplayer_factory(int, std::string)`                      | `join_ack_extractor()`         |        `new_player_id` `new_player_name`         |
-|   `PLAYERLEAVE`   |   `ResultPlayerLeave`   | `playerleave_factory(int)`                                 | `join_ack_extractor()`         |                   `player_id`                    |
-|    `GAMESTART`    |    `ResultGameStart`    | `gamestart_factory()`                                      | `gamestart_extractor()`        |                        -                         |
-| `CLIENTKEEPALIVE` | `ResultClientKeepAlive` | `client_keepalive_factory(int)`                            | `client_keepalive_extractor()` |                   `player_id`                    |
-| `SERVERKEEPALIVE` | `ResultServerKeepAlive` | `server_keepalive_factory()`                               | `server_keepalive_extractor()` |                        -                         |
-|  `PLAYERACTION`   |  `ResultPlayerAction`   | `player_action_factory(int, int, int)`                     | `player_action_extractor()`    |     `player_id` `draw_card_id` `put_card_id`     |
+|    Identifier     | Factory                                                      | Extractor                                          | ExtractResult Class     |
+| :---------------: | ------------------------------------------------------------ | -------------------------------------------------- | ----------------------- |
+|    `JOIN_ROOM`    | `join_room_factory(std::string)`                             | `join_room_extractor(const char * message)`        | `ResultJoinROOM`        |
+|    `JOIN_ACK`     | `join_ack_factory(int player_count, int player_id, std::map<int, std::string> & player_map)` | `join_ack_extractor(const char * message)`         | `ResultJoinACK`         |
+|    `NEWPLAYER`    | `newplayer_factory(int new_player_id, std::string player_name)` | `join_ack_extractor(const char * message)`         | `ResultNewPlayer`       |
+|   `PLAYERLEAVE`   | `playerleave_factory(int player_id)`                         | `join_ack_extractor(const char * message)`         | `ResultPlayerLeave`     |
+|    `GAMESTART`    | `gamestart_factory()`                                        | `gamestart_extractor(const char * message)`        | `ResultGameStart`       |
+| `CLIENTKEEPALIVE` | `client_keepalive_factory(int player_id)`                    | `client_keepalive_extractor(const char * message)` | `ResultClientKeepAlive` |
+| `SERVERKEEPALIVE` | `server_keepalive_factory()`                                 | `server_keepalive_extractor(const char * message)` | `ResultServerKeepAlive` |
+|  `PLAYERACTION`   | `player_action_factory(int player_id, int draw_card_id, int put_card_id)` | `player_action_extractor(const char * message)`    | `ResultPlayerAction`    |
 
 
 

@@ -20,7 +20,7 @@ ExtractResult* MessageExtractor::join_room_extractor(const char *message) {
     return new ResultJoinRoom(std::string(player_name_buf));
 }
 
-std::string MessageFactory::join_ack_factory(const int player_count, const int player_id, std::map<int, std::string> & player_map){
+std::string MessageFactory::join_ack_factory(int player_count, int player_id, std::map<int, std::string> & player_map){
     if(player_count<=0 or player_id<0 or player_map.empty()
        or player_map.size()!=player_count)
         return std::string(MESSAGE_ERROR);
