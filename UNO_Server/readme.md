@@ -19,16 +19,18 @@
 
 定义的交互规范见下表
 
-|    Identifier     |   ExtractResult Class   | MessageFactory Params / MessageExtractor Returns |
-| :---------------: | :---------------------: | :----------------------------------------------: |
-|    `JOIN_ROOM`    |    `ResultJoinROOM`     |                  `player_name`                   |
-|    `JOIN_ACK`     |     `ResultJoinACK`     | `player_count` `assigned_player_id` `player_map` |
-|    `NEWPLAYER`    |    `ResultNewPlayer`    |        `new_player_id` `new_player_name`         |
-|   `PLAYERLEAVE`   |   `ResultPlayerLeave`   |                   `player_id`                    |
-|    `GAMESTART`    |    `ResultGameStart`    |                        -                         |
-| `CLIENTKEEPALIVE` | `ResultClientKeepAlive` |                   `player_id`                    |
-| `SERVERKEEPALIVE` | `ResultServerKeepAlive` |                        -                         |
-|  `PLAYERACTION`   |  `ResultPlayerAction`   |     `player_id` `draw_card_id` `put_card_id`     |
+|    Identifier     |   ExtractResult Class   | Factory                                                    | Extractor                      |        Factory Params / Extractor Returns        |
+| :---------------: | :---------------------: | ---------------------------------------------------------- | ------------------------------ | :----------------------------------------------: |
+|    `JOIN_ROOM`    |    `ResultJoinROOM`     | `join_room_factory(std::string)`                           | `join_room_extractor()`        |                  `player_name`                   |
+|    `JOIN_ACK`     |     `ResultJoinACK`     | `join_ack_factory(int, int, std::map<int, std::string> &)` | `join_ack_extractor()`         | `player_count` `assigned_player_id` `player_map` |
+|    `NEWPLAYER`    |    `ResultNewPlayer`    | `newplayer_factory(int, std::string)`                      | `join_ack_extractor()`         |        `new_player_id` `new_player_name`         |
+|   `PLAYERLEAVE`   |   `ResultPlayerLeave`   | `playerleave_factory(int)`                                 | `join_ack_extractor()`         |                   `player_id`                    |
+|    `GAMESTART`    |    `ResultGameStart`    | `gamestart_factory()`                                      | `gamestart_extractor()`        |                        -                         |
+| `CLIENTKEEPALIVE` | `ResultClientKeepAlive` | `client_keepalive_factory(int)`                            | `client_keepalive_extractor()` |                   `player_id`                    |
+| `SERVERKEEPALIVE` | `ResultServerKeepAlive` | `server_keepalive_factory()`                               | `server_keepalive_extractor()` |                        -                         |
+|  `PLAYERACTION`   |  `ResultPlayerAction`   | `player_action_factory(int, int, int)`                     | `player_action_extractor()`    |     `player_id` `draw_card_id` `put_card_id`     |
+
+
 
 调用示例：
 
@@ -175,4 +177,17 @@ EOF
 
 
 通过卡牌的`card_id`获取相应的卡牌，可以通过`Card::getCardById()`，然后再调用`getCardType`。
+
+调用示例：
+
+```c++
+Card handcard[3]={
+Card::getCardById(0),
+Card::getCardById(5),
+Card::getCardById(26)
+};
+assert(Card::getCardById(1) == Card(Card::COLOR::RED, Card::CARD_TYPE::NUMBERIC, 1));
+
+assert(handcard[0] == Card::getCardById(0));
+```
 

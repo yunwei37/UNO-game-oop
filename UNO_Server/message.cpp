@@ -148,7 +148,7 @@ ExtractResult* MessageExtractor::handleMessage(const char *message) {
     else if(identify(IDENTIFIER_NEWPLAYER))
         return MessageExtractor::newplayer_extractor(message);
     else if(identify(IDENTIFIER_PLAYERLEAVE))
-        return MessageExtractor::playerleave_extractor(message);
+        return MessageExtractor::`join_ack_extractor`(message);
     else if(identify(IDENTIFIER_PLAYERACTION))
         return MessageExtractor::player_action_extractor(message);
     else

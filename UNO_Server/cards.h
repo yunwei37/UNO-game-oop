@@ -2,8 +2,8 @@
 // Created by ubuntu on 2020/6/9.
 //
 
-#ifndef UNO_SERVER_CARDS_H
-#define UNO_SERVER_CARDS_H
+#ifndef UNO_CARDS_H
+#define UNO_CARDS_H
 
 
 class Card{
@@ -198,4 +198,4 @@ bool Card::operator!=(const Card &rhs) const {
     return !(rhs == *this);
 }
 
-#endif //UNO_SERVER_CARDS_H
+#endif //UNO_CARDS_H
