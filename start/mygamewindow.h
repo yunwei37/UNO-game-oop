@@ -14,14 +14,16 @@ class myGameWindow : public QMainWindow
 private:
     int gameType;
     int playerNum;
-    QVector<PlayerWidget *> players;
+    bool turnDirection;
 
 public:
     explicit myGameWindow(QWidget *parent = nullptr);
     explicit myGameWindow(int gameType, int playerNum, QWidget *parent = nullptr);
     void showCards();
-
+    void showPlayers();
+    void changeDirection();
     QVector<CardWidget *> MyCards;
+    QVector<PlayerWidget *> Players;
 
 protected:
     virtual void paintEvent(QPaintEvent *event);

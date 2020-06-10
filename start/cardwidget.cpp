@@ -10,14 +10,16 @@ bool CardWidget::getIsClick() const
 
 CardWidget::CardWidget(QWidget *parent) : QWidget(parent)
 {
+    this->isShow = false;
+    this->pix = QPixmap(":/UNO2D/Cardback.jpg");
 }
 
-CardWidget::CardWidget(int id, int color, bool isShow, QWidget *parent) : QWidget(parent)
+CardWidget::CardWidget(int id, int color, QWidget *parent) : QWidget(parent)
 {
     this->id = id;
     this->color = color;
-    this->isShow = isShow;
     this->isClick = false;
+    this->isShow = true;
     this->setWindowFlags(Qt::FramelessWindowHint);
     connect(this, SIGNAL(clicked()), this, SLOT(mouseClicked()));
 
@@ -44,11 +46,12 @@ CardWidget::CardWidget(int id, int color, bool isShow, QWidget *parent) : QWidge
         resName += colorMap[color] + "Skip" + ".jpg";
     }
     this->pix = QPixmap(resName);
-    this->backpix = QPixmap(":/UNO2D/Cardback.jpg");
 }
 
 void CardWidget::setClick(bool b)
 {
+    if(isShow == false)
+        return;
     isClick = b;
     if (isClick)
     {
@@ -80,14 +83,8 @@ void CardWidget::paintEvent(QPaintEvent *event)
     painter.fillRect(this->rect(), QBrush(Qt::transparent));
     //定义一个图像用来绘到背景
     QPixmap thisPix(width(), height());
-    if (isShow)
-    {
-        thisPix = this->pix;
-    }
-    else //不显示直接绘牌的背面
-    {
-        thisPix = this->backpix;
-    }
+    thisPix = this->pix;
+
 
     //绘制到背景上去
     painter.drawPixmap(this->rect(), thisPix);

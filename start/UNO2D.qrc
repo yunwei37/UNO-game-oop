@@ -69,5 +69,13 @@
         <file>UNO2D/yes.png</file>
         <file>UNO2D/goback.png</file>
         <file>UNO2D/Cardback.jpg</file>
+        <file>UNO2D/1.png</file>
+        <file>UNO2D/2.png</file>
+        <file>UNO2D/3.png</file>
+        <file>UNO2D/4.png</file>
+        <file>UNO2D/5.png</file>
+        <file>UNO2D/6.png</file>
+        <file>UNO2D/back1.png</file>
+        <file>UNO2D/back2.png</file>
     </qresource>
 </RCC>

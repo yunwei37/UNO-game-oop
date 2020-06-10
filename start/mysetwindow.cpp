@@ -52,13 +52,20 @@ mysetwindow::mysetwindow(QWidget *parent) : QMainWindow(parent)
             qDebug() << qname;
 
             // test code
-            mgw->MyCards.append(new CardWidget(2,1,true,mgw));
-            mgw->MyCards.append(new CardWidget(0,2,true,mgw));
-            mgw->MyCards.append(new CardWidget(9,0,true,mgw));
-            mgw->MyCards.append(new CardWidget(2,1,true,mgw));
-            mgw->MyCards.append(new CardWidget(11,2,true,mgw));
-            mgw->MyCards.append(new CardWidget(8,1,true,mgw));
-            mgw->MyCards.append(new CardWidget(7,0,true,mgw));
+            mgw->MyCards.append(new CardWidget(2,1,mgw));
+            mgw->MyCards.append(new CardWidget(0,2,mgw));
+            mgw->MyCards.append(new CardWidget(9,0,mgw));
+            mgw->MyCards.append(new CardWidget(2,1,mgw));
+            mgw->MyCards.append(new CardWidget(11,2,mgw));
+            mgw->MyCards.append(new CardWidget(8,1,mgw));
+            mgw->MyCards.append(new CardWidget(7,0,mgw));
+            mgw->MyCards.append(new CardWidget(mgw));
+            mgw->MyCards.append(new CardWidget(mgw));
+
+            mgw->Players.append(new PlayerWidget( QString("player1"),QString(":/UNO2D/1.png"),mgw));
+            mgw->Players[0]->setCurrentCardCount(7);
+            mgw->Players.append(new PlayerWidget( QString("player2"),QString(":/UNO2D/2.png"),mgw));
+            mgw->Players[1]->setCurrentCardCount(3);
 
             this->hide();
             mgw->show();
@@ -86,5 +93,7 @@ void mysetwindow::paintEvent(QPaintEvent *)
     painter.drawPixmap(0, 0, this->width(), this->height(), pix);
     QPixmap pix1;
     pix1.load(":/UNO2D/setup.png");
+
+
     painter.drawPixmap(this->width() * 0.37, this->height() * 0.15, pix1.width(), pix1.height(), pix1);
 }
