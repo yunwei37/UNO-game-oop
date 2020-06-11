@@ -9,7 +9,6 @@
 
 class backend{
 private:
-    QVector<Card> allCards;
     QVector<playerThread> otherPlayers;
     
     QString myName;
@@ -29,14 +28,14 @@ public:
     
     int getCurrnetTurnID();
     
-    bool getMyCards(QVector<Card>& cards);
+    bool getMyCards(QVector<Card*> cards);
 
-    bool getTopFiveCards(QVector<Card>& cards);
+    bool getTopFiveCards(QVector<Card*> cards);
     
     int getPlayerCardCount(int playerID);
     QString getPlayerName(int playerID);
 
-    Card drawCard();
+    Card* drawCard();
 
     void sayUNO();
 

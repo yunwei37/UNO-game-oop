@@ -21,8 +21,8 @@ ExtractResult* MessageExtractor::join_room_extractor(const char *message) {
 }
 
 std::string MessageFactory::join_ack_factory(int player_count, int player_id, std::map<int, std::string> & player_map){
-    if(player_count<=0 or player_id<0 or player_map.empty()
-       or player_map.size()!=(unsigned)player_count)
+    if(player_count<=0 || player_id<0 || player_map.empty()
+       || player_map.size()!=(unsigned)player_count)
         return std::string(MESSAGE_ERROR);
 
     char message[1024], buf[128];
