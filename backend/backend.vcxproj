@@ -56,7 +56,7 @@
   </ImportGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <QtInstall>msvc2017_64</QtInstall>
-    <QtModules>core;network</QtModules>
+    <QtModules>core;gui;network;widgets</QtModules>
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <QtInstall>msvc2017_64</QtInstall>
@@ -178,6 +178,7 @@
   <ItemGroup>
     <ClCompile Include="aithread.cpp" />
     <ClCompile Include="backend.cpp" />
+    <ClCompile Include="card.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="message.cpp" />
     <ClCompile Include="netserver.cpp" />
@@ -185,6 +186,7 @@
     <ClCompile Include="playerthread.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="test.h" />
     <QtMoc Include="aithread.h">
     </QtMoc>
     <ClInclude Include="backend.h" />

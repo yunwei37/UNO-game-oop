@@ -1,14 +1,16 @@
 #include "netthread.h"
 
-netThread::netThread():playerThread()
+netThread::netThread(int id) :playerThread()
 {
-
+	type = 1;
+	playerID = id;
 }
 
-void netThread::run()
-{
-    while(true){
-        std::cout<<"hello 2"<<std::endl;
-        sleep(2);
-    }
+void netThread::start() {
+	/*
+	while (true) {
+		emit actionReady("hello 1");
+		QThread::sleep(2);
+	}
+	*/
 }

@@ -1,59 +1,74 @@
 #include "backend.h"
 
-void backend::setMyName(const QString& value)
+void Backend::sayUNO()
 {
-	myName = value;
 }
 
-backend::backend()
+void Backend::playCard(int cardID)
+{
+}
+
+void Backend::reciveAction(const QString& action)
 {
 
 }
 
-backend::backend(int playerNum, int netPlayerNum, int AIPlayerNum)
+void Backend::start()
 {
-	backend();
+
+}
+
+Backend::Backend(int playerNum, int netPlayerNum, int AIPlayerNum, QString myName)
+{
 	this->playerCount = playerNum;
 	this->netPlayerCount = netPlayerNum;
 	this->AIPlayerCount = AIPlayerNum;
+
+	Card::getAllCards(cards);
+
+	int i = 0;
+	Players.append(new playerThread(0, myName, nullptr));
+
+	for (int j = 0; j < netPlayerNum; ++j) {
+
+	}
+	for (int j = 0; j < AIPlayerNum; ++j) {
+
+	}
 }
 
-int backend::getCurrentStatue()
+Backend::~Backend()
+{
+
+}
+
+int Backend::getCurrentStatue()
 {
 	return 0;
 }
 
-int backend::getCurrnetTurnID()
+int Backend::getCurrnetTurnID()
 {
 	return 0;
 }
 
-bool backend::getMyCards(QVector<Card*> cards)
+bool Backend::getMyCards(QVector<Card*> &cards)
 {
 	return true;
 }
 
-bool backend::getTopFiveCards(QVector<Card*> cards)
+bool Backend::getTopFiveCards(QVector<Card*> &cards)
 {
 	return true;
 }
 
-int backend::getPlayerCardCount(int playerID)
+int Backend::getPlayerCardCount(int playerID)
 {
 	return 0;
 }
 
-QString backend::getPlayerName(int playerID)
+QString Backend::getPlayerName(int playerID)
 {
-	return "";
+	return Players[playerID]->getPlayerName();
 }
 
-Card* backend::drawCard()
-{
-	return nullptr;
-}
-
-void backend::sayUNO()
-{
-
-}

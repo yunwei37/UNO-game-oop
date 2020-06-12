@@ -7,47 +7,46 @@
 #include <qvector.h>
 #include <playerthread.h>
 
-class backend{
+
+/*
+    后端类：可以由前端进行获取状态信息和进行操作；
+    每个其他玩家都是一个类，在backend中声明；
+
+ */
+class Backend{
 private:
-    QVector<playerThread> otherPlayers;
-    
-    QString myName;
+    QVector<playerThread*> Players;
+
+    QVector<Card*> cards;
+
     
     int playerCount;
     int netPlayerCount;
     int AIPlayerCount;
     
     int currentTimeSamp;
-    
+
 public:
-    backend();
-    backend(int playerNum,int netPlayerNum,int AIPlayerNum);
-    
+    Backend(int playerNum,int netPlayerNum,int AIPlayerNum, QString myName);
+    ~Backend();
+
     // for the front to get current statue
     int getCurrentStatue();     // return statue id
-    
     int getCurrnetTurnID();
-    
-    bool getMyCards(QVector<Card*> cards);
-
-    bool getTopFiveCards(QVector<Card*> cards);
-    
+    bool getMyCards(QVector<Card*>& cards);
+    bool getTopFiveCards(QVector<Card*> &cards);
     int getPlayerCardCount(int playerID);
     QString getPlayerName(int playerID);
 
-    Card* drawCard();
 
-    void sayUNO();
-
-    // set at the begining
-    void setMyName(const QString &value);
-
-    // call start
+public slots:
     void start();
+    void sayUNO();
+    void playCard(int cardID);
+    void reciveAction(const QString& action);
 
 signals:
-    void AIMoveEnds();
-    void netMoveEnds();
+    void MoveEnds();
 };
 
 

@@ -1,12 +1,12 @@
-QT += core
+QT += core gui
 QT += network
-QT -= gui
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++11
 
 TARGET = backend
 CONFIG += console
-CONFIG -= app_bundle
+CONFIG += app_bundle
 
 TEMPLATE = app
 
@@ -14,6 +14,7 @@ SOURCES += main.cpp \
     aithread.cpp \
     netthread.cpp \
     message.cpp \
+    card.cpp \
     netserver.cpp \
     backend.cpp \
     playerthread.cpp

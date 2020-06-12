@@ -7,10 +7,12 @@
 class AIthread: public playerThread
 {
         Q_OBJECT
+private:
+    static const QString names[];
 public:
-    AIthread();
-protected:
-    void run();
+    AIthread(int id);
+public slots:
+    void start();
 };
 
 #endif // AITHREAD_H

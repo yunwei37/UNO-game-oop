@@ -1,14 +1,15 @@
 #include <QCoreApplication>
+#include <QApplication>
 #include "aithread.h"
 #include "netthread.h"
+#include "backend.h"
 #include <qtcpsocket.h>
+#include "test.h"
 
 int main(int argc, char *argv[])
-{
-    QCoreApplication a(argc, argv);
-    AIthread *at = new AIthread();
-    netThread *nt = new netThread();
-    at->start();
-    nt->start();
-    return a.exec();
+{	
+	QApplication a(argc, argv);
+    Backend b(4,1,2,"");
+	Controller c;
+	return a.exec();
 }
