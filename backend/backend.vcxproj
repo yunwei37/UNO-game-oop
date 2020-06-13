@@ -189,7 +189,7 @@
     <QtMoc Include="test.h" />
     <QtMoc Include="aithread.h">
     </QtMoc>
-    <ClInclude Include="backend.h" />
+    <QtMoc Include="backend.h" />
     <ClInclude Include="cards.h" />
     <ClInclude Include="extractresults.h" />
     <ClInclude Include="message.h" />

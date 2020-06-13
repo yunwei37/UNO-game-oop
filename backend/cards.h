@@ -11,14 +11,15 @@ class Card {
 
 public:
 
-	enum class COLOR { RED, YELLOW, BLUE, GREEN, BLACK };
-	enum class CARD_TYPE { NUMBERIC, WILD, WILD_DRAW_FOUR, SKIP, RESERVE, DRAW_TWO };
-
+	enum COLOR { RED, YELLOW, BLUE, GREEN, BLACK };
+	enum CARD_TYPE { NUMBERIC, WILD, WILD_DRAW_FOUR, SKIP, RESERVE, DRAW_TWO };
 	// get attrs
 	COLOR getColor() const;
 	CARD_TYPE getCardType() const;
 	int getCardId() const;
 	int getCardNum() const;
+	static COLOR getColorById(int id);
+	static CARD_TYPE getCardTypeById(int id);
 
 	// get cards
 	static void getAllCards(QVector<Card*>& cards);
@@ -30,8 +31,6 @@ public:
 
 	int getProcesser() const;
 	void setProcesser(int value);
-	int getTimestamp() const;
-	void setTimestamp(int value);
 
 protected:
 	COLOR color;
@@ -46,7 +45,6 @@ private:
 
 	static int count;
 	int processer;      // represents the card owner
-	int timestamp;      // represents the last used time
 };
 
 #endif //UNO_CARDS_H

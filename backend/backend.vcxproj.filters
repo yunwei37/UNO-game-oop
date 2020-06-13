@@ -56,9 +56,6 @@
     <QtMoc Include="aithread.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <ClInclude Include="backend.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="cards.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -78,6 +75,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="test.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="backend.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

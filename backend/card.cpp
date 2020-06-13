@@ -137,6 +137,34 @@ int Card::getCardNum() const {
 	return cardNum;
 }
 
+Card::COLOR Card::getColorById(int id)
+{
+	return COLOR(id/25);
+}
+
+Card::CARD_TYPE Card::getCardTypeById(int id)
+{
+	if (id >= 104 ) {
+		return WILD_DRAW_FOUR;
+	}
+	else if (id >= 100) {
+		return WILD;
+	}
+	else if (id % 25 < 19) {
+		return NUMBERIC;
+	}else if(id % 25 < 21){
+		return SKIP;
+	}else if(id % 25 < 21){
+		return SKIP;
+	}
+	else if (id % 25 < 23) {
+		return DRAW_TWO;
+	}
+	else if (id % 25 < 25) {
+		return RESERVE;
+	}
+}
+
 void Card::getAllCards(QVector<Card*>& cards)
 {
 	for (auto c : allCards) {
@@ -168,17 +196,6 @@ void Card::setProcesser(int value)
 	processer = value;
 }
 
-int Card::getTimestamp() const
-{
-	return timestamp;
-}
-
-void Card::setTimestamp(int value)
-{
-	timestamp = value;
-}
-
 Card::Card(COLOR color, CARD_TYPE cardType, int cardNum) : color(color), cardType(cardType), cardNum(cardNum), cardId(count++) {
-	timestamp = 0;
-	processer = 0;
+	processer = -1;
 }

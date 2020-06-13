@@ -22,7 +22,6 @@ public:
 
     int getPlayerID() const;
     int getType() const;
-
 };
 
 #endif // PLAYERTHREAD_H
