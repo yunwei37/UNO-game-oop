@@ -8,7 +8,7 @@ AIthread::AIthread(int id):playerThread()
 	char buff[2] = "0";
 	buff[0] += id;
 	playerName = QString("AI No. ") + QString(buff);
-
+	playerID = id;
 }
 
 void AIthread::start() {

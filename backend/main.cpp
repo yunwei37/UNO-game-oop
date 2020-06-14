@@ -21,12 +21,13 @@ void testCard() {
 
 int main(int argc, char *argv[])
 {	
-	/*
+
 	QApplication a(argc, argv);
-    Backend b(4,"");
-	Controller c;
-	
+	Controller c(3);
+	c.test();
+
 	return a.exec();
-	*/
-	testCard();
+
+
+	//testCard();
 }

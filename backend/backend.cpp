@@ -5,8 +5,8 @@ void Backend::sayUNO()
 	unoflag = true;
 }
 
-void Backend::playCard(int cardID,Card::COLOR color )
-{	
+void Backend::playCard(int cardID, Card::COLOR color)
+{
 	auto c = cards[cardID];
 	c->setProcesser(100);
 	if (queueTop.size() == 5) {
@@ -73,13 +73,13 @@ void Backend::reciveAction(const QString& action)
 
 }
 
-void Backend::start()
+void Backend::startGame()
 {
 	currentStatue = Start;
 }
 
 Card* Backend::randomCardFromStack()
-{	
+{
 	QVector<Card*> randv;
 	for (auto c : cards) {
 		if (c->getProcesser() == -1) {
@@ -95,9 +95,9 @@ Card* Backend::randomCardFromStack()
 }
 
 void Backend::getNextPlayer()
-{	
+{
 	if (direction == 1) {
-		currentTurnId = (currentTurnId + 1)%playerCount;
+		currentTurnId = (currentTurnId + 1) % playerCount;
 	}
 	else {
 		currentTurnId = (currentTurnId - 1) >= 0 ? (currentTurnId - 1) : (playerCount - 1);
@@ -112,7 +112,9 @@ void Backend::setAllFlagsFalse()
 }
 
 int Backend::getTopNum()
-{
+{	
+	if (queueTop.isEmpty())
+		return -1;
 	return queueTop.constLast()->getCardNum();
 }
 
@@ -123,11 +125,18 @@ Backend::Backend(int playerNum, QString myName)
 
 	Card::getAllCards(cards);
 
-	int i = 1;
 	Players.push_back(new playerThread(0, myName, nullptr));
 
 	for (int j = 0; j < this->AIPlayerCount; ++j) {
-		Players.push_back(new AIthread(j + i));
+		Players.push_back(new AIthread(j + 1));
+	}
+	// move to thread
+	for (int j = 0; j < this->AIPlayerCount; ++j) {
+		//Players[j + 1]->moveToThread(&workerThreads[j]);
+		//connect(&workerThreads[j], &QThread::finished, Players[j + 1], &QObject::deleteLater);
+		connect(this, &Backend::StartMove, (AIthread*)Players[j + 1], &AIthread::start);
+		//connect((AIthread*)&workerThreads[j], &AIthread::actionReady, this, &Backend::reciveAction);
+		//workerThreads[j].start();
 	}
 
 	this->currentStatue = Init;
@@ -135,6 +144,7 @@ Backend::Backend(int playerNum, QString myName)
 	setAllFlagsFalse();
 	this->currentColor = Card::BLACK;
 	this->nextDrawNum = 0;
+	this->direction = 1;
 }
 
 Backend::Backend(int maxPlayerNum, int AInum, QString myName)
@@ -149,10 +159,14 @@ Backend::~Backend()
 	for (auto p : Players) {
 		delete p;
 	}
+	for (int i = 1; i < playerCount; ++i) {
+		workerThreads[i - 1].quit();
+		workerThreads[i - 1].wait();
+	}
 }
 
 flags Backend::getCurrentStatue()
-{	
+{
 	flags save = currentStatue;
 	Card* c;
 	QVector<int> validids;
@@ -181,6 +195,7 @@ flags Backend::getCurrentStatue()
 		if (this->currentColor == Card::BLACK) {				// 如果是黑色的，随机选一种颜色
 			this->currentColor = (Card::COLOR)(rand() % 4);
 		}
+		direction = 1;
 		break;
 	case Opera:						// 玩家进行操作状态
 		currentStatue = Opera;
@@ -206,7 +221,7 @@ flags Backend::getCurrentStatue()
 		else if (drawNflag) {
 			currentStatue = DrawN;
 		}
-		else if ( unoflag == false && mycards.size() == 1) {
+		else if (unoflag == false && mycards.size() == 1) {
 			currentStatue = ForgetUNO;
 		}
 		else if (mycards.size() == 0) {
@@ -259,18 +274,18 @@ int Backend::getCurrnetTurnID()
 	return currentTurnId;
 }
 
-bool Backend::getMyCards(QVector<Card*> &cards)
-{	
+bool Backend::getMyCards(QVector<Card*>& mycards)
+{
 	for (auto c : cards) {
 		if (c->getProcesser() == 0) {
-			cards.push_back(c);
+			mycards.push_back(c);
 		}
 	}
 	return true;
 }
 
 bool Backend::getMyValidCards(QVector<int>& cardIDs)
-{	
+{
 	QVector<Card*> mycards;
 	getMyCards(mycards);
 	int lastNum = getTopNum();
@@ -282,16 +297,18 @@ bool Backend::getMyValidCards(QVector<int>& cardIDs)
 	return true;
 }
 
-bool Backend::getTopFiveCards(QVector<Card*> &cards)
+bool Backend::getTopFiveCards(QVector<Card*>& tcards)
 {	
+	if (queueTop.isEmpty())
+		return false;
 	for (auto c : queueTop) {
-		cards.push_back(c);
+		tcards.push_back(c);
 	}
 	return true;
 }
 
 int Backend::getPlayerCardCount(int playerID)
-{	
+{
 	int count = 0;
 	for (auto c : cards) {
 		if (c->getProcesser() == playerID) {

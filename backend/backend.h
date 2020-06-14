@@ -38,11 +38,11 @@
 
 enum flags { Error = -2, Init = -1, Start, Opera, Draw, DrawPut, Put, ForgetUNO, Skip, DrawN, Win, Lost  };
 
-class Backend:public QObject{
+class Backend : public QObject{
     Q_OBJECT
+        QThread workerThreads[7];
 private:
     QVector<playerThread*> Players;
-    QVector<QThread> workerThreads;
     QVector<Card*> cards;
 
     QList<Card*> queueTop;
@@ -86,7 +86,7 @@ public:
 
 public slots:
     // 前端调用
-    void start();
+    void startGame();
     void sayUNO();
     void playCard(int cardID,Card::COLOR color);
     void drawCard();
@@ -95,6 +95,9 @@ public slots:
     void reciveAction(const QString& action);
 
 signals:
+    // 对AI：
+    void StartMove();
+    //对前端
     void MoveEnds();
 };
 

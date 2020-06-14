@@ -167,8 +167,8 @@ Card::CARD_TYPE Card::getCardTypeById(int id)
 
 void Card::getAllCards(QVector<Card*>& cards)
 {
-	for (auto c : allCards) {
-		cards.push_back(&c);
+	for (int i = 0; i < 108;++i) {
+		cards.push_back(&allCards[i]);
 	}
 }
 
