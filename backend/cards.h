@@ -13,6 +13,11 @@ public:
 
 	enum COLOR { RED, YELLOW, BLUE, GREEN, BLACK };
 	enum CARD_TYPE { NUMBERIC, WILD, WILD_DRAW_FOUR, SKIP, RESERVE, DRAW_TWO };
+	// generate cards
+	static void CreateAllCards();
+	static void deleteAllCards();
+
+
 	// get attrs
 	COLOR getColor() const;
 	CARD_TYPE getCardType() const;
@@ -40,9 +45,9 @@ protected:
 	int cardId;
 	int cardNum;
 
-	static  Card allCards[];
-
 private:
+	static QVector<Card*> allCards;
+
 	Card(COLOR color, CARD_TYPE cardType, int cardNum = -1);
 
 	static int count;

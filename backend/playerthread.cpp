@@ -1,19 +1,25 @@
 #include "playerthread.h"
+#include "backend.h"
 
-playerThread::playerThread(QObject* parent): QObject(parent)
+playerThread::playerThread(Backend* b, QObject* parent): QObject(parent)
 {
 	type = -1;
+	playerID = 0;
+	back = b;
 }
 
-playerThread::playerThread(int id, QObject* parent)
+playerThread::playerThread(int id, Backend* b, QObject* parent)
 {
+	type = -1;
 	playerID = id;
+	back = b;
 }
 
-playerThread::playerThread(int id, QString name, QObject* parent)
+playerThread::playerThread(int id, Backend* b, QString name, QObject* parent)
 {
 	playerID = id;
 	playerName = name;
+	back = b;
 }
 
 QString playerThread::getPlayerName() const

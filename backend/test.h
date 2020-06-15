@@ -9,6 +9,8 @@
 class Controller : public QObject
 {
 	Q_OBJECT;
+	static std::string colors[];
+	static std::string types[];
 public:
 	int statue;
 	int timestamp = 0;
@@ -39,11 +41,14 @@ public:
 			QVector<Card*> mycards;
 			b->getPlayerCards(b->getCurrnetTurnID(), mycards);
 			b->getPlayerValidCards(b->getCurrnetTurnID(),validids);
-			if (statue == 1 || statue == 3) {			// if opera
+
+			if (b->getCurrnetTurnID() == 0 &&( statue == 1 || statue == 3)) {			// if opera
 				if (validids.size() > 0) {
-					std::cin >> cardid;
+					//std::cin >> cardid;
+					cardid = validids[rand() % validids.size()];
 					if (Card::getCardTypeById(cardid) == Card::WILD || Card::getCardTypeById(cardid) == Card::WILD_DRAW_FOUR)
-						std::cin >> colorid;
+						colorid = rand() % 4;
+						//std::cin >> colorid;
 					if (cardid == -1) {
 						chooseDraw();
 					}
@@ -63,6 +68,7 @@ public:
 					chooseDraw();
 				}
 			}
+
 			printData(b);			// get next statue
 			if (statue == 5) {
 				printData(b);
@@ -115,13 +121,11 @@ public:
 
 	}
 	void printCard(int id) {
-		std::string colors[] = { "RED", "YELLOW", "BLUE", "GREEN", "LACK" };
-		std::string types[] = { "NUMBERIC", "WILD", "WILD_DRAW_FOUR", "SKIP", "RESERVE", "DRAW_TWO" };
 		std::cout << "card:" << id << " " << colors[Card::getColorById(id)] << " num: " << Card::getCardNumById(id)
 			<< " type: " << types[Card::getCardTypeById(id)] << std::endl;
 	}
 	Backend* createBack() {
-		return new Backend(playerCount, "me");
+		return new Backend(playerCount, "me",true);
 	}
 	void destroyBack(Backend* b) {
 		delete b;

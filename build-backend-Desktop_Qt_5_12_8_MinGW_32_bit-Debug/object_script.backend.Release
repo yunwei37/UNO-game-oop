@@ -1,0 +1,13 @@
+release/main.o
+release/aithread.o
+release/netthread.o
+release/message.o
+release/card.o
+release/netserver.o
+release/backend.o
+release/playerthread.o
+release/moc_aithread.o
+release/moc_netthread.o
+release/moc_netserver.o
+release/moc_backend.o
+release/moc_playerthread.o

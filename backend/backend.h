@@ -7,6 +7,7 @@
 #include <qvector.h>
 #include <qlist.h>
 #include <playerthread.h>
+#include <ctime>
 
 
 /*
@@ -48,6 +49,9 @@ class Backend : public QObject{
     Q_OBJECT
         QThread workerThreads[7];
 private:
+
+    bool usingAI;
+
     QVector<playerThread*> Players;
     QVector<Card*> cards;
 
@@ -74,8 +78,10 @@ private:
     void setAllFlagsFalse();                        // 置位所有的flag
     int getTopNum();
 
+    void callAIforOp();
+
 public:
-    Backend(int playerNum, QString myName);         // single player
+    Backend(int playerNum, QString myName, bool isAI = false);         // single player
     Backend(int maxPlayerNum,int AInum, QString myName);       // net players
     ~Backend();
 
@@ -99,12 +105,10 @@ public slots:
     void playCard(int cardID,Card::COLOR color);
     void drawCard();
 
-    // 其他线程通信
-    void reciveAction(const QString& action);
 
 signals:
     // 对AI：
-    void StartMove();
+    void StartMove(int id);
     //对前端
     void MoveEnds();
 };

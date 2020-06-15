@@ -6,6 +6,9 @@
 #include <qtcpsocket.h>
 #include "test.h"
 
+std::string Controller::colors[] = { "RED", "YELLOW", "BLUE", "GREEN", "LACK" };
+std::string Controller::types[] = { "NUMBERIC", "WILD", "WILD_DRAW_FOUR", "SKIP", "RESERVE", "DRAW_TWO" };
+
 void testCard() {
 	for (int i = 0; i < 108; ++i) {
 		Card* c = Card::getCardById(i);
@@ -23,7 +26,7 @@ int main(int argc, char *argv[])
 {	
 
 	QApplication a(argc, argv);
-	Controller c(3);
+	Controller c(8);
 	c.test();
 	c.test();
 	return a.exec();

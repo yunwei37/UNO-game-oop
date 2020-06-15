@@ -6,7 +6,11 @@ void Backend::sayUNO()
 }
 
 void Backend::playCard(int cardID, Card::COLOR color)
-{
+{	
+	QVector<int> validids;
+	getPlayerValidCards(currentTurnId, validids);
+	assert(validids.count(cardID) != 0);
+
 	auto c = cards[cardID];
 	c->setProcesser(100);
 	if (queueTop.size() == 5) {
@@ -55,12 +59,6 @@ void Backend::drawCard()
 	currentStatue = Draw;
 }
 
-// net
-void Backend::reciveAction(const QString& action)
-{
-
-}
-
 void Backend::startGame()
 {
 	currentStatue = Start;
@@ -106,23 +104,37 @@ int Backend::getTopNum()
 	return queueTop.constLast()->getCardNum();
 }
 
-Backend::Backend(int playerNum, QString myName)
+void Backend::callAIforOp()
+{
+	if ( usingAI == false || currentTurnId == 0) {
+		return;
+	}
+	emit StartMove(currentTurnId);
+}
+
+Backend::Backend(int playerNum, QString myName, bool isAI)
 {
 	this->playerCount = playerNum;
 	this->AIPlayerCount = playerNum - 1;
+	this->usingAI = isAI;
 
+	Card::CreateAllCards();
 	Card::getAllCards(cards);
 
-	Players.push_back(new playerThread(0, myName, nullptr));
+	Players.push_back(new playerThread(0,this, myName, nullptr));
 
 	for (int j = 0; j < this->AIPlayerCount; ++j) {
-		Players.push_back(new AIthread(j + 1));
+		Players.push_back(new AIthread(j + 1,this));
 	}
+
 	// move to thread
 	for (int j = 0; j < this->AIPlayerCount; ++j) {
 		//Players[j + 1]->moveToThread(&workerThreads[j]);
 		//connect(&workerThreads[j], &QThread::finished, Players[j + 1], &QObject::deleteLater);
 		connect(this, &Backend::StartMove, (AIthread*)Players[j + 1], &AIthread::start);
+		connect((AIthread*)Players[j + 1], &AIthread::chooseDraw, this, &Backend::drawCard);
+		connect((AIthread*)Players[j + 1], &AIthread::choosePlay, this, &Backend::playCard);
+		connect((AIthread*)Players[j + 1], &AIthread::chooseUno, this, &Backend::sayUNO);
 		//connect((AIthread*)&Players[j + 1], &AIthread::actionReady, this, &Backend::reciveAction);
 		//workerThreads[j].start();
 	}
@@ -139,7 +151,7 @@ Backend::Backend(int maxPlayerNum, int AInum, QString myName)
 {
 	this->AIPlayerCount = AInum;
 	int i = 1;
-	Players.push_back(new playerThread(0, myName, nullptr));
+	Players.push_back(new playerThread(0, this, myName, nullptr));
 }
 
 Backend::~Backend()
@@ -151,6 +163,7 @@ Backend::~Backend()
 		workerThreads[i - 1].quit();
 		workerThreads[i - 1].wait();
 	}
+	Card::deleteAllCards();
 }
 
 flags Backend::getCurrentStatue()
@@ -165,13 +178,14 @@ flags Backend::getCurrentStatue()
 		exit(1);
 		break;
 	case Init:						// 初始状态
+		srand(clock());
 		currentStatue = Init;
 		// wait for net players to join
 		break;
 	case Start:							// 总共每人抽八张，抽牌过程由前端显示， 后端一次性完成
 		currentStatue = Opera;
 		for (auto p : Players) {		// 抽牌
-			for (int i = 0; i < 1; ++i) {
+			for (int i = 0; i < 8; ++i) {
 				auto c = randomCardFromStack();
 				c->setProcesser(p->getPlayerID());
 			}
@@ -188,6 +202,7 @@ flags Backend::getCurrentStatue()
 	case Opera:						// 玩家进行操作状态
 		getNextPlayer();
 		currentStatue = Opera;
+		callAIforOp();
 		break;
 	case Draw:						//  玩家抽牌后的状态
 		c = randomCardFromStack();								
@@ -202,6 +217,7 @@ flags Backend::getCurrentStatue()
 		break;
 	case DrawOpera:					// 玩家抽牌后等待出牌状态
 		currentStatue = DrawOpera;
+		callAIforOp();
 		break;
 	case Put:						// 玩家出牌后的状态
 		getPlayerCards(currentTurnId, mycards);
