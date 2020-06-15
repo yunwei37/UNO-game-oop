@@ -18,8 +18,10 @@ public:
 	CARD_TYPE getCardType() const;
 	int getCardId() const;
 	int getCardNum() const;
+
 	static COLOR getColorById(int id);
 	static CARD_TYPE getCardTypeById(int id);
+	static int getCardNumById(int id);
 
 	// get cards
 	static void getAllCards(QVector<Card*>& cards);

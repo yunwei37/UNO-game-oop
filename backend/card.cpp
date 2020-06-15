@@ -165,6 +165,17 @@ Card::CARD_TYPE Card::getCardTypeById(int id)
 	}
 }
 
+int Card::getCardNumById(int id)
+{	
+	if (getCardTypeById(id) == NUMBERIC) {
+		return (id % 25 - 1) / 2 + 1;
+	}
+	else {
+		return -1;
+	}
+	return 0;
+}
+
 void Card::getAllCards(QVector<Card*>& cards)
 {
 	for (int i = 0; i < 108;++i) {

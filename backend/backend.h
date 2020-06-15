@@ -34,9 +34,15 @@
         7       需要摸牌n张并跳过回合
         8       游戏胜利
         9       游戏失败
+
+
+        部分规则：
+            以自己为第一个出牌玩家；
+            目前不支持连出多张+N牌；
+            可以选择摸牌，不需要没有牌的时候再进行，选择摸完牌之后如果手牌上的牌能够出牌，可以立即选择出牌；
  */
 
-enum flags { Error = -2, Init = -1, Start, Opera, Draw, DrawPut, Put, ForgetUNO, Skip, DrawN, Win, Lost  };
+enum flags { Error = -2, Init = -1, Start, Opera, Draw, DrawOpera, Put, ForgetUNO, Skip, DrawN, Win, Lost  };
 
 class Backend : public QObject{
     Q_OBJECT
@@ -76,8 +82,10 @@ public:
     // for the front to get current statue
     flags getCurrentStatue();     // return statue flag
     int getCurrnetTurnID();
-    bool getMyCards(QVector<Card*>& cards);        // 返回我的手牌，供显示；
-    bool getMyValidCards(QVector<int>& cardIDs);     // 返回我可以出牌的序号
+    bool getPlayerCards(int id, QVector<Card*>& mycards);
+    bool getPlayerCards(QVector<Card*>& cards);        // 返回我的手牌，供显示；
+    bool getPlayerValidCards(int id, QVector<int>& cardIDs);
+    bool getPlayerValidCards(QVector<int>& cardIDs);     // 返回我可以出牌的序号
     bool getTopFiveCards(QVector<Card*> &cards);        // 返回牌堆顶上的五张牌
     int getPlayerCardCount(int playerID);               
     QString getPlayerName(int playerID);            

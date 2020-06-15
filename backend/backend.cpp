@@ -10,56 +10,44 @@ void Backend::playCard(int cardID, Card::COLOR color)
 	auto c = cards[cardID];
 	c->setProcesser(100);
 	if (queueTop.size() == 5) {
+		queueTop.front()->setProcesser(-1);
 		queueTop.pop_front();
 	}
 	queueTop.push_back(c);
 	auto type = c->getCardType();
+	currentStatue = Put;
 	switch (type) {
 
-	case Card::NUMBERIC:				 // 基础卡
-		currentStatue = Put;
-		setAllFlagsFalse();
+	case Card::NUMBERIC:				 // 基础卡		setAllFlagsFalse();
 		currentColor = c->getColor();
 		break;
 
 	case Card::WILD:
 		this->currentColor = color;
-		currentStatue = Put;
-		setAllFlagsFalse();
 		break;
 
 	case Card::WILD_DRAW_FOUR:
 		this->currentColor = color;
-		currentStatue = Put;
-		setAllFlagsFalse();
 		drawNflag = true;
 		nextDrawNum += 4;
 		break;
 
 	case Card::SKIP:
-		currentStatue = Put;
-		setAllFlagsFalse();
 		skipFlag = true;
 		currentColor = c->getColor();
 		break;
 
 	case Card::RESERVE:
-		currentStatue = Put;
-		setAllFlagsFalse();
 		direction = -direction;
 		currentColor = c->getColor();
 		break;
 
 	case Card::DRAW_TWO:
-		currentStatue = Put;
-		setAllFlagsFalse();
 		drawNflag = true;
 		nextDrawNum += 2;
 		currentColor = c->getColor();
 		break;
-
 	}
-	getNextPlayer();
 }
 
 void Backend::drawCard()
@@ -135,12 +123,12 @@ Backend::Backend(int playerNum, QString myName)
 		//Players[j + 1]->moveToThread(&workerThreads[j]);
 		//connect(&workerThreads[j], &QThread::finished, Players[j + 1], &QObject::deleteLater);
 		connect(this, &Backend::StartMove, (AIthread*)Players[j + 1], &AIthread::start);
-		//connect((AIthread*)&workerThreads[j], &AIthread::actionReady, this, &Backend::reciveAction);
+		//connect((AIthread*)&Players[j + 1], &AIthread::actionReady, this, &Backend::reciveAction);
 		//workerThreads[j].start();
 	}
 
 	this->currentStatue = Init;
-	this->currentTurnId = 0;
+	this->currentTurnId = playerCount-1;
 	setAllFlagsFalse();
 	this->currentColor = Card::BLACK;
 	this->nextDrawNum = 0;
@@ -183,7 +171,7 @@ flags Backend::getCurrentStatue()
 	case Start:							// 总共每人抽八张，抽牌过程由前端显示， 后端一次性完成
 		currentStatue = Opera;
 		for (auto p : Players) {		// 抽牌
-			for (int i = 0; i < 8; ++i) {
+			for (int i = 0; i < 1; ++i) {
 				auto c = randomCardFromStack();
 				c->setProcesser(p->getPlayerID());
 			}
@@ -198,31 +186,33 @@ flags Backend::getCurrentStatue()
 		direction = 1;
 		break;
 	case Opera:						// 玩家进行操作状态
+		getNextPlayer();
 		currentStatue = Opera;
 		break;
 	case Draw:						//  玩家抽牌后的状态
-		getMyValidCards(validids);
+		c = randomCardFromStack();								
+		c->setProcesser(currentTurnId);
+		getPlayerValidCards(currentTurnId, validids);
 		if (validids.isEmpty()) {
 			currentStatue = Opera;
-			getNextPlayer();
 		}
 		else {
-			currentStatue = DrawPut;
+			currentStatue = DrawOpera;
 		}
 		break;
-	case DrawPut:					// 玩家抽牌后等待出牌状态
-		currentStatue = DrawPut;
+	case DrawOpera:					// 玩家抽牌后等待出牌状态
+		currentStatue = DrawOpera;
 		break;
 	case Put:						// 玩家出牌后的状态
-		getMyCards(mycards);
-		if (skipFlag) {
+		getPlayerCards(currentTurnId, mycards);
+		if (unoflag == false && mycards.size() == 1) {
+			currentStatue = ForgetUNO;
+		}
+		else if (skipFlag) {
 			currentStatue = Skip;
 		}
 		else if (drawNflag) {
 			currentStatue = DrawN;
-		}
-		else if (unoflag == false && mycards.size() == 1) {
-			currentStatue = ForgetUNO;
 		}
 		else if (mycards.size() == 0) {
 			if (currentTurnId == 0) {
@@ -235,17 +225,30 @@ flags Backend::getCurrentStatue()
 		else {
 			currentStatue = Opera;
 		}
-		getNextPlayer();
 		break;
 	case ForgetUNO:
-		currentStatue = ForgetUNO;
+		c = randomCardFromStack();
+		c->setProcesser(currentTurnId);
+		c = randomCardFromStack();
+		c->setProcesser(currentTurnId);
+		if (skipFlag) {
+			currentStatue = Skip;
+		}
+		else if (drawNflag) {
+			currentStatue = DrawN;
+		}
+		else {
+			currentStatue = Opera;
+		}
+		setAllFlagsFalse();
 		break;
 	case Skip:
+		getNextPlayer();
 		currentStatue = Opera;
 		setAllFlagsFalse();
-		getNextPlayer();
 		break;
 	case DrawN:
+		getNextPlayer();
 		currentStatue = Opera;
 		for (int i = 0; i < nextDrawNum; ++i) {
 			c = randomCardFromStack();
@@ -253,7 +256,6 @@ flags Backend::getCurrentStatue()
 		}
 		nextDrawNum = 0;
 		setAllFlagsFalse();
-		getNextPlayer();
 		break;
 	case Win:
 		currentStatue = Win;
@@ -274,26 +276,38 @@ int Backend::getCurrnetTurnID()
 	return currentTurnId;
 }
 
-bool Backend::getMyCards(QVector<Card*>& mycards)
+bool Backend::getPlayerCards(int id,QVector<Card*>& mycards)
 {
 	for (auto c : cards) {
-		if (c->getProcesser() == 0) {
+		if (c->getProcesser() == id) {
 			mycards.push_back(c);
 		}
 	}
 	return true;
 }
 
-bool Backend::getMyValidCards(QVector<int>& cardIDs)
+bool Backend::getPlayerCards(QVector<Card*>& mycards)
+{
+	getPlayerCards(0, mycards);
+	return true;
+}
+
+bool Backend::getPlayerValidCards(int id,QVector<int>& cardIDs)
 {
 	QVector<Card*> mycards;
-	getMyCards(mycards);
+	getPlayerCards(id,mycards);
 	int lastNum = getTopNum();
 	for (auto c : mycards) {
-		if (c->getCardNum() == lastNum || c->getColor() == currentColor || c->getColor() == Card::BLACK) {
+		if ((c->getCardNum() == lastNum && lastNum!=-1) || c->getColor() == currentColor || c->getColor() == Card::BLACK) {
 			cardIDs.push_back(c->getCardId());
 		}
 	}
+	return true;
+}
+
+bool Backend::getPlayerValidCards(QVector<int>& cardIDs)
+{
+	getPlayerValidCards(0, cardIDs);
 	return true;
 }
 
@@ -325,11 +339,13 @@ QString Backend::getPlayerName(int playerID)
 
 int Backend::countPoints(int playerID)
 {
-	if (currentStatue != Lost) {
+	if (currentStatue != Lost && currentStatue != Win) {
 		return -1;
 	}
 	int count = 0;
-	for (auto c : cards) {
+	QVector<Card*> mycards;
+	getPlayerCards(playerID, mycards);
+	for (auto c : mycards) {
 		switch (c->getCardType()) {
 		case Card::NUMBERIC:
 			count += c->getCardNum();

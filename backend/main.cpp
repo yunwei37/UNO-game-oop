@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
 	QApplication a(argc, argv);
 	Controller c(3);
 	c.test();
-
+	c.test();
 	return a.exec();
 
 

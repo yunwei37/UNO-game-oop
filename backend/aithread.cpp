@@ -11,6 +11,10 @@ AIthread::AIthread(int id):playerThread()
 	playerID = id;
 }
 
+void AIthread::receivePossibles(QString cardIds)
+{
+}
+
 void AIthread::start() {
 
 }
