@@ -6,27 +6,40 @@
 #include "cardwidget.h"
 #include "playerwidget.h"
 #include "mypushbutton.h"
-
+#include<QTimer>
+#include"transformation.h"
 class myGameWindow : public QMainWindow
 {
     Q_OBJECT
 
-private:
+public:
     int gameType;
     int playerNum;
     bool turnDirection;
-
+    int nowNum;
+    QTimer* time;
+    int effortNum;
+    bool isUno;
+    bool isPress;
+    int color;
+    bool isEffort;
+    int rat;
+    bool v;
+    CardWidget *c;
 public:
     explicit myGameWindow(QWidget *parent = nullptr);
-    explicit myGameWindow(int gameType, int playerNum, QWidget *parent = nullptr);
     void showCards();
     void showPlayers();
     void changeDirection();
+    void showEffort();
+    void get(int gameType,int playerNum);
+    void showV();
     QVector<CardWidget *> MyCards;
     QVector<PlayerWidget *> Players;
-
+    QVector<CardWidget *> PickCards;
 protected:
     virtual void paintEvent(QPaintEvent *event);
+public slots:
 };
 
 #endif // MYGAMEWINDOW_H
