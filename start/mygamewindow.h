@@ -8,6 +8,8 @@
 #include "mypushbutton.h"
 #include<QTimer>
 #include"transformation.h"
+#include"victory.h"
+class victory;
 class myGameWindow : public QMainWindow
 {
     Q_OBJECT
@@ -25,7 +27,9 @@ public:
     bool isEffort;
     int rat;
     bool v;
+    bool isChange;
     CardWidget *c;
+    victory *vic;
 public:
     explicit myGameWindow(QWidget *parent = nullptr);
     void showCards();

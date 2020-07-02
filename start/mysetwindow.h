@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include "mygamewindow.h"
 #include"readywindow.h"
-
+class readywindow;
 class mysetwindow : public QMainWindow
 {
   Q_OBJECT

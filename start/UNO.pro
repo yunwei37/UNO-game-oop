@@ -23,7 +23,8 @@ SOURCES += \
     cardwidget.cpp \
     mygamewindow.cpp \
     playerwidget.cpp \
-    readywindow.cpp
+    readywindow.cpp \
+    victory.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -32,7 +33,8 @@ HEADERS += \
     cardwidget.h \
     mygamewindow.h \
     playerwidget.h \
-    readywindow.h
+    readywindow.h \
+    victory.h
 
 FORMS += \
     mainwindow.ui

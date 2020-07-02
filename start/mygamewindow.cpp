@@ -16,6 +16,7 @@ myGameWindow::myGameWindow(QWidget *parent) : QMainWindow(parent)
     isUno=false;
     effortNum=0;
     v=false;
+    vic=new victory();
     setStyleSheet("QWidget{font-family:方正粗圆简体;}");
     setFixedSize(1299, 731);
     this->setWindowIcon(QIcon(":/UNO2D/star.png"));
@@ -24,6 +25,18 @@ myGameWindow::myGameWindow(QWidget *parent) : QMainWindow(parent)
     MyPushButton *setBtn=new MyPushButton(":/UNO2D/quit.png");
     setBtn->setParent(this);
     setBtn->move(0,0);
+    MyPushButton *redBtn =new MyPushButton(":/UNO2D/red.png");
+    redBtn->setParent(this);
+    redBtn->hide();
+    MyPushButton *yellowBtn =new MyPushButton(":/UNO2D/yellow.png");
+    yellowBtn->setParent(this);
+    yellowBtn->hide();
+    MyPushButton *blueBtn =new MyPushButton(":/UNO2D/blue.png");
+    blueBtn->setParent(this);
+    blueBtn->hide();
+    MyPushButton *greenBtn =new MyPushButton(":/UNO2D/green.png");
+    greenBtn->setParent(this);
+    greenBtn->hide();
     MyPushButton *goBtn=new MyPushButton(":/UNO2D/go.png");
     goBtn->setParent(this);
     goBtn->move(400,500);
@@ -44,6 +57,82 @@ myGameWindow::myGameWindow(QWidget *parent) : QMainWindow(parent)
                        {
                            PickCards.append(new CardWidget(a,b,this));
                            qDebug()<<PickCards.length();
+                           if(a==13||a==14)
+                           {
+                               redBtn->move(this->width() *0.415, this->height() *0.52);
+                               redBtn->show();
+                               connect(redBtn,&MyPushButton::clicked,[=]()
+                                  {
+                                      //弹起特效
+                                   if(!isChange)
+                                   {
+                                      redBtn->zoom1();
+                                      redBtn->zoom2();
+                                      QTimer::singleShot(400,this,[=](){
+                                            color=2;
+                                            isChange=true;
+                                      });}
+                                   redBtn->hide();
+                                   blueBtn->hide();
+                                   yellowBtn->hide();
+                                   greenBtn->hide();
+                                  });
+                               blueBtn->move(this->width() * 0.35, this->height() * 0.37);
+                               blueBtn->show();
+                               connect(blueBtn,&MyPushButton::clicked,[=]()
+                                  {
+                                      //弹起特效
+                                   if(!isChange)
+                                   {
+                                      blueBtn->zoom1();
+                                      blueBtn->zoom2();
+                                      QTimer::singleShot(400,this,[=](){
+                                            color=0;
+                                            isChange=true;
+                                      });}
+                                   redBtn->hide();
+                                   blueBtn->hide();
+                                   yellowBtn->hide();
+                                   greenBtn->hide();
+                                  });
+                               yellowBtn->move(this->width() * 0.5, this->height() * 0.4);
+                               yellowBtn->show();
+                               connect(yellowBtn,&MyPushButton::clicked,[=]()
+                                  {
+                                      //弹起特效
+                                   if(!isChange)
+                                   {
+                                      yellowBtn->zoom1();
+                                      yellowBtn->zoom2();
+                                      QTimer::singleShot(400,this,[=](){
+                                            color=3;
+                                            isChange=true;
+                                      });}
+                                   redBtn->hide();
+                                   blueBtn->hide();
+                                   yellowBtn->hide();
+                                   greenBtn->hide();
+                                  });
+                               greenBtn->move(this->width() * 0.43, this->height() * 0.25);
+                               greenBtn->show();
+                               connect(greenBtn,&MyPushButton::clicked,[=]()
+                                  {
+                                      //弹起特效
+                                   if(!isChange)
+                                   {
+                                      greenBtn->zoom1();
+                                      greenBtn->zoom2();
+                                      QTimer::singleShot(400,this,[=](){
+                                            color=1;
+                                            isChange=true;
+                                      });}
+                                   redBtn->hide();
+                                   blueBtn->hide();
+                                   yellowBtn->hide();
+                                   greenBtn->hide();
+                                  });
+                           }
+                       isChange=false;
                        }
 
                         break;}
@@ -90,8 +179,12 @@ void myGameWindow::showCards()
 {
     //获取牌的张数
     int n = MyCards.size();
-    if (n == 0)
-        return;
+    if(n==0)
+    {   qDebug()<<"n=0";
+     this->close();
+     vic->show();
+     return ;
+    }
     //自己的牌左边(X)位置计算
     int left = (width() - (n - 1) * 40 - MyCards[0]->width()) / 2;
     //自己的牌上面(Y)位置
@@ -114,7 +207,6 @@ void myGameWindow::showCards()
     if(n==2)
         isUno=true;
     else isUno=false;
-    if(n==0) v=true;
 }
 
 void myGameWindow::showPlayers()
@@ -223,7 +315,7 @@ void myGameWindow::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
     QPixmap pix;
-    QPixmap p1,p2;
+    QPixmap p1,p2,p3;
     int ratt;
     pix.load(":/UNO2D/back3.png");
     painter.drawPixmap(this->rect(), pix);
@@ -238,9 +330,9 @@ void myGameWindow::paintEvent(QPaintEvent *event)
     {
        painter.drawPixmap(555,500,p2.width(),p2.height(),p2);
     }
+
     showCards();
     showPlayers();
-
     if((PickCards.length()-effortNum)==1)
     {
         if(PickCards.length()>=2)
@@ -253,19 +345,12 @@ void myGameWindow::paintEvent(QPaintEvent *event)
        }   while(n.msecsTo(now)<=500);
         effortNum++;
     }
-    if(v==true)
-    {
-
-    }
     }
 void myGameWindow::get(int gameType,int playerNum)
 {
     this->gameType=gameType;
     this->playerNum=playerNum;
 }
-void myGameWindow::showV()
-{
 
-}
 
 

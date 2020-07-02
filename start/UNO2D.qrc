@@ -103,5 +103,12 @@
         <file>UNO2D/YellowReverse2.png</file>
         <file>UNO2D/YellowSkip2.png</file>
         <file>UNO2D/DrawFour2.png</file>
+        <file>UNO2D/Wild2.png</file>
+        <file>UNO2D/onceagain.png</file>
+        <file>UNO2D/winquit.png</file>
+        <file>UNO2D/blue.png</file>
+        <file>UNO2D/green.png</file>
+        <file>UNO2D/red.png</file>
+        <file>UNO2D/yellow.png</file>
     </qresource>
 </RCC>
