@@ -9,19 +9,17 @@
 class PlayerWidget : public QWidget
 {
     Q_OBJECT
-private:
+public:
     QPixmap playerImg;
     int currentCardCount;
     QVector<CardWidget *> Cards;
     QString playerID;
     bool isTurned;
-
 public:
     explicit PlayerWidget(QWidget *parent = nullptr);
     explicit PlayerWidget(QString id, QPixmap playerImg, QWidget *parent = nullptr);
 
     void setCurrentCardCount(int value);
-
     void setIsTurned(bool value);
 
 protected:

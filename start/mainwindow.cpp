@@ -5,6 +5,7 @@
 #include<QDebug>
 #include<QTimer>
 #include<mysetwindow.h>
+#include<victory.h>
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -20,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
     MyPushButton *model1Btn=new MyPushButton(":/UNO2D/model1.png");
     model1Btn->setParent(this);
     model1Btn->move(this->width()*0.5-model1Btn->width()*0.5,this->height()*0.25);
-     msw =new  mysetwindow;
+     msw =new  mysetwindow();
 
      connect(msw,&mysetwindow::mysetBack,this,[=]()
      {

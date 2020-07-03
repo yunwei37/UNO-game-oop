@@ -77,5 +77,38 @@
         <file>UNO2D/6.png</file>
         <file>UNO2D/back1.png</file>
         <file>UNO2D/back2.png</file>
+        <file>UNO2D/11.png</file>
+        <file>UNO2D/12.png</file>
+        <file>UNO2D/back3.png</file>
+        <file>UNO2D/ready.png</file>
+        <file>UNO2D/start2.png</file>
+        <file>UNO2D/connecting.png</file>
+        <file>UNO2D/ready2.png</file>
+        <file>UNO2D/cao.PNG</file>
+        <file>UNO2D/power.PNG</file>
+        <file>UNO2D/7.png</file>
+        <file>UNO2D/go.png</file>
+        <file>UNO2D/UNO2.png</file>
+        <file>UNO2D/UNO.png</file>
+        <file>UNO2D/BlueDrawtwo2.png</file>
+        <file>UNO2D/BlueReverse2.png</file>
+        <file>UNO2D/BlueSkip2.png</file>
+        <file>UNO2D/GreenDrawtwo2.png</file>
+        <file>UNO2D/GreenReverse2.png</file>
+        <file>UNO2D/GreenSkip2.png</file>
+        <file>UNO2D/RedDrawtwo2.png</file>
+        <file>UNO2D/RedReverse2.png</file>
+        <file>UNO2D/RedSikp2.png</file>
+        <file>UNO2D/YellowDrawtwo2.png</file>
+        <file>UNO2D/YellowReverse2.png</file>
+        <file>UNO2D/YellowSkip2.png</file>
+        <file>UNO2D/DrawFour2.png</file>
+        <file>UNO2D/Wild2.png</file>
+        <file>UNO2D/onceagain.png</file>
+        <file>UNO2D/winquit.png</file>
+        <file>UNO2D/blue.png</file>
+        <file>UNO2D/green.png</file>
+        <file>UNO2D/red.png</file>
+        <file>UNO2D/yellow.png</file>
     </qresource>
 </RCC>

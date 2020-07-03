@@ -1,6 +1,8 @@
 #include "playerwidget.h"
 #include "cardwidget.h"
-
+#include"mypushbutton.h"
+#include"QTimer"
+#include"QDebug"
 void PlayerWidget::setCurrentCardCount(int value)
 {
     currentCardCount = value;
@@ -39,19 +41,17 @@ void PlayerWidget::paintEvent(QPaintEvent *event)
     painter.setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
     //透明覆盖
     painter.fillRect(this->rect(), QBrush(Qt::transparent));
-
     //绘制到背景上去
     painter.drawPixmap(QRect(this->rect().left(),this->rect().top(),this->rect().height()*0.8,this->rect().width())
                            , playerImg);
-
     QFont font;
     font.setPixelSize(24);
     QFontMetrics metrics(font);
     int w=metrics.width(playerID); //获取显示文本的宽度
     int h=metrics.height();
-    painter.setFont(font);
-    painter.setPen(Qt::black);
-    painter.drawText(QRect(width()*0.2,height()*0.77-h,w,h),playerID);
+    painter.setFont(QFont("微软雅黑" ,10 ,  QFont::Bold));
+    painter.setPen(Qt::white);
+    painter.drawText(QRect(width()*0.2,height()*0.72-h+7,w,h),playerID);
 
     int left = 0, i = 0;
     //自己的牌上面(Y)位置
@@ -59,10 +59,10 @@ void PlayerWidget::paintEvent(QPaintEvent *event)
 
     for(auto card:Cards){
         card->setGeometry(580,300,width()*0.10,height()*0.15);
-        card->move(left + i * width()/(Cards.size()*2), top);
+        card->move(left +20+ i * width()/(Cards.size()*2), top-12);
         card->show();
         card->raise();
         i++;
     }
-
 }
+

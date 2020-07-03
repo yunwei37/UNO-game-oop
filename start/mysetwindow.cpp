@@ -6,6 +6,7 @@
 #include <mypushbutton.h>
 #include <QTimer>
 #include "mainwindow.h"
+#include"readywindow.h"
 mysetwindow::mysetwindow(QWidget *parent) : QMainWindow(parent)
 {
     //配置场景
@@ -15,7 +16,10 @@ mysetwindow::mysetwindow(QWidget *parent) : QMainWindow(parent)
 
     //设置标题
     QLineEdit *PersonNum = new QLineEdit(this);
-
+    PersonNum->setFont(QFont("微软雅黑" ,10 ,  QFont::Bold));
+    QPalette palette;
+    palette.setColor(QPalette::Text,Qt::white);
+    PersonNum->setPalette(palette);
     //PersonNum->setPlaceholderText("请输入游戏人数");
     PersonNum->setEchoMode(QLineEdit::Normal);
     PersonNum->setParent(this);
@@ -24,6 +28,10 @@ mysetwindow::mysetwindow(QWidget *parent) : QMainWindow(parent)
     PersonNum->move(this->width() * 0.5 - 100, this->height() * 0.5 - 20);
 
     QLineEdit *PersonName = new QLineEdit(this);
+    PersonName->setFont(QFont("微软雅黑" ,10 ,  QFont::Bold));
+    QPalette palettee;
+    palettee.setColor(QPalette::Text,Qt::white);
+    PersonName->setPalette(palette);
     //PersonName->setPlaceholderText("请输入用户名");
     PersonName->setEchoMode(QLineEdit::Normal);
     PersonName->setParent(this);
@@ -32,43 +40,25 @@ mysetwindow::mysetwindow(QWidget *parent) : QMainWindow(parent)
     PersonName->move(this->width() * 0.5 - 100, this->height() * 0.5 + 220);
     PersonName->setStyleSheet("background-color:rgba(0,0,0,0);");
     PersonNum->setStyleSheet("background-color:rgba(0,0,0,0);");
-    PersonName->show();
-    PersonNum->show();
-
-    mgw = new myGameWindow;
-
     MyPushButton *yesBtn = new MyPushButton(":/UNO2D/yes.png");
     yesBtn->setParent(this);
     yesBtn->move(this->width() * 0.75, this->height() * 0.65);
+    PersonName->show();
+    PersonNum->show();
+    rdw=new readywindow();
     connect(yesBtn, &MyPushButton::clicked, [=]() {
         //弹起特效
         yesBtn->zoom1();
         yesBtn->zoom2();
+        qnum = PersonNum->text();
+        qname = PersonName->text();
+        rdw->setNumName(qnum,qname);
         QTimer::singleShot(400, this, [=]() {
             //进入设置场景
-            QString qnum = PersonNum->text();
-            QString qname = PersonName->text();
-            qDebug() << qnum;
-            qDebug() << qname;
-
-            // test code
-            mgw->MyCards.append(new CardWidget(2,1,mgw));
-            mgw->MyCards.append(new CardWidget(0,2,mgw));
-            mgw->MyCards.append(new CardWidget(9,0,mgw));
-            mgw->MyCards.append(new CardWidget(2,1,mgw));
-            mgw->MyCards.append(new CardWidget(11,2,mgw));
-            mgw->MyCards.append(new CardWidget(8,1,mgw));
-            mgw->MyCards.append(new CardWidget(7,0,mgw));
-            mgw->MyCards.append(new CardWidget(mgw));
-            mgw->MyCards.append(new CardWidget(mgw));
-
-            mgw->Players.append(new PlayerWidget( QString("player1"),QString(":/UNO2D/1.png"),mgw));
-            mgw->Players[0]->setCurrentCardCount(7);
-            mgw->Players.append(new PlayerWidget( QString("player2"),QString(":/UNO2D/2.png"),mgw));
-            mgw->Players[1]->setCurrentCardCount(3);
-
+            qDebug() <<  qnum;
+            qDebug() <<  qname;
             this->hide();
-            mgw->show();
+            rdw->show();
         });
     });
 
@@ -84,6 +74,11 @@ mysetwindow::mysetwindow(QWidget *parent) : QMainWindow(parent)
             emit this->mysetBack();
         });
     });
+    connect(rdw,&readywindow::mysetBack,this,[=]()
+    {
+        rdw->hide();
+        this->show();
+    });
 }
 void mysetwindow::paintEvent(QPaintEvent *)
 {
@@ -93,7 +88,5 @@ void mysetwindow::paintEvent(QPaintEvent *)
     painter.drawPixmap(0, 0, this->width(), this->height(), pix);
     QPixmap pix1;
     pix1.load(":/UNO2D/setup.png");
-
-
     painter.drawPixmap(this->width() * 0.37, this->height() * 0.15, pix1.width(), pix1.height(), pix1);
 }

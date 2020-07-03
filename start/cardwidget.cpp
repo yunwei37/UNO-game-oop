@@ -24,28 +24,39 @@ CardWidget::CardWidget(int id, int color, QWidget *parent) : QWidget(parent)
     connect(this, SIGNAL(clicked()), this, SLOT(mouseClicked()));
 
     QString colorMap[] = {"Blue", "Green", "Red", "Yellow"};
-    QString resName = ":/UNO2D/";
+    QString rresName = ":/UNO2D/";
     char buffer[] = "0";
+
     if (id < 10)
     {
         buffer[0]+=id;
-        resName += colorMap[color];
-        resName += buffer;
-        resName += ".jpg";
+        rresName += colorMap[color];
+        rresName += buffer;
+        rresName += ".jpg";
     }
     else if (id == 10)
     {
-        resName += colorMap[color] + "Drawtwo" + ".jpg";
+        rresName += colorMap[color] + "Drawtwo" + ".jpg";
     }
     else if (id == 11)
     {
-        resName += colorMap[color] + "Reverse" + ".jpg";
+        rresName += colorMap[color] + "Reverse" + ".jpg";
     }
     else if (id == 12)
     {
-        resName += colorMap[color] + "Skip" + ".jpg";
+        rresName += colorMap[color]+"Skip" + ".jpg";
     }
-    this->pix = QPixmap(resName);
+    else if(id==13)
+    {
+        rresName =rresName + "Wild" + ".jpg";
+    }
+    else if(id==14)
+    {
+        rresName =rresName + "DrawFour" + ".jpg";
+    }
+    this->resName=rresName;
+
+    this->pix = QPixmap(this->resName);
 }
 
 void CardWidget::setClick(bool b)
@@ -84,8 +95,6 @@ void CardWidget::paintEvent(QPaintEvent *event)
     //定义一个图像用来绘到背景
     QPixmap thisPix(width(), height());
     thisPix = this->pix;
-
-
     //绘制到背景上去
     painter.drawPixmap(this->rect(), thisPix);
 }
