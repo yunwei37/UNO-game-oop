@@ -87,6 +87,7 @@ public:
 
     // for the front to get current statue
     flags getCurrentStatue();     // return statue flag
+
     int getCurrnetTurnID();
     bool getPlayerCards(int id, QVector<Card*>& mycards);
     bool getPlayerCards(QVector<Card*>& cards);        // 返回我的手牌，供显示；
