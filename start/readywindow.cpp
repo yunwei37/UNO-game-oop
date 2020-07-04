@@ -12,7 +12,8 @@ readywindow::readywindow(QWidget *parent) : QMainWindow(parent)
     int a = qnum.toInt();
     int b = 1;
     myGameWindow *mgw = new myGameWindow();
-    mgw->get(b, a);
+    mgw->setGameProperties(b, a);
+
     //test
     personName.push_back("Mike");
     personName.push_back("Tony");
@@ -21,6 +22,7 @@ readywindow::readywindow(QWidget *parent) : QMainWindow(parent)
     personName.push_back("Lebron");
     personName.push_back("Westbrook");
     personName.push_back("Durant");
+
     this->setFixedSize(1282, 800);
     this->setWindowTitle("房间等待");
     this->setWindowIcon(QIcon(":/UNO2D/star.png"));
@@ -33,6 +35,7 @@ readywindow::readywindow(QWidget *parent) : QMainWindow(parent)
     MyPushButton *gobackBtn = new MyPushButton(":/UNO2D/goback.png");
     gobackBtn->setParent(this);
     gobackBtn->move(this->width() * 0.05, this->height() * 0.05);
+
     connect(gobackBtn, &MyPushButton::clicked, [=]() {
         //弹起特效
         gobackBtn->zoom1();
@@ -42,6 +45,7 @@ readywindow::readywindow(QWidget *parent) : QMainWindow(parent)
             emit this->mysetBack();
         });
     });
+
     connect(yesBtn, &MyPushButton::clicked, [=]() {
         //弹起特效
         yesBtn->zoom1();
@@ -55,18 +59,11 @@ readywindow::readywindow(QWidget *parent) : QMainWindow(parent)
             timeStart = 1;
             update();
             connecting();
+
             QTimer::singleShot(1200, this, [=]() {
                 // test code
                 //此处应加入随机生成每个玩家牌的部分
-                mgw->MyCards.append(new CardWidget(2, 1, mgw));
-                mgw->MyCards.append(new CardWidget(10, 2, mgw));
-                mgw->MyCards.append(new CardWidget(11, 0, mgw));
-                mgw->MyCards.append(new CardWidget(12, 1, mgw));
-                mgw->MyCards.append(new CardWidget(13, 2, mgw));
-                mgw->MyCards.append(new CardWidget(14, 1, mgw));
-                mgw->MyCards.append(new CardWidget(7, 0, mgw));
                 mgw->Players.append(new PlayerWidget(QString(qname), QString(":/UNO2D/" + QString::number(1) + ".png"), mgw));
-                mgw->Players[0]->setCurrentCardCount(7);
 
                 for (int i = 0; i < qnum.toInt() - 1; i++)
                 {
@@ -75,6 +72,7 @@ readywindow::readywindow(QWidget *parent) : QMainWindow(parent)
                 }
                 this->hide();
                 mgw->show();
+
             });
         });
     });

@@ -363,8 +363,18 @@ void myGameWindow::paintEvent(QPaintEvent *event)
         effortNum++;
     }
 }
-void myGameWindow::get(int gameType, int playerNum)
+void myGameWindow::setGameProperties(int gameType, int playerNum)
 {
     this->gameType = gameType;
     this->playerNum = playerNum;
+}
+
+void myGameWindow::initBackend(int playerNum, QString myName, bool isAI)
+{
+    this->backend = new Backend(playerNum,myName,isAI);
+    connect(this, &myGameWindow::operate, this->backend, &Backend::startGame);
+    connect(this, &myGameWindow::draw, this->backend, &Backend::drawCard);
+    connect(this, &myGameWindow::play, this->backend, &Backend::playCard);
+    connect(this, &myGameWindow::uno, this->backend, &Backend::sayUNO);
+
 }

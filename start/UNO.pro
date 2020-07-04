@@ -1,4 +1,5 @@
 QT       += core gui
+QT += network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -16,22 +17,37 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    aithread.cpp \
+    backend.cpp \
+    card.cpp \
     main.cpp \
     mainwindow.cpp \
+    message.cpp \
     mypushbutton.cpp \
     mysetwindow.cpp \
     cardwidget.cpp \
     mygamewindow.cpp \
+    netserver.cpp \
+    netthread.cpp \
+    playerthread.cpp \
     playerwidget.cpp \
     readywindow.cpp \
     victory.cpp
 
 HEADERS += \
+    aithread.h \
+    backend.h \
+    cards.h \
+    extractresults.h \
     mainwindow.h \
+    message.h \
     mypushbutton.h \
     mysetwindow.h \
     cardwidget.h \
     mygamewindow.h \
+    netserver.h \
+    netthread.h \
+    playerthread.h \
     playerwidget.h \
     readywindow.h \
     victory.h
