@@ -11,7 +11,7 @@ class Card {
 
 public:
 
-	enum COLOR { RED, YELLOW, BLUE, GREEN, BLACK };
+    enum COLOR { BLUE, GREEN, RED, YELLOW, BLACK };
 	enum CARD_TYPE { NUMBERIC, WILD, WILD_DRAW_FOUR, SKIP, RESERVE, DRAW_TWO };
 	// generate cards
 	static void CreateAllCards();

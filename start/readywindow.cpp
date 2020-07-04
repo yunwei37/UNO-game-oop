@@ -64,12 +64,12 @@ readywindow::readywindow(QWidget *parent) : QMainWindow(parent)
                 // test code
                 //此处应加入随机生成每个玩家牌的部分
                 mgw->Players.append(new PlayerWidget(QString(qname), QString(":/UNO2D/" + QString::number(1) + ".png"), mgw));
-
+                mgw->MyCards.append(new CardWidget(0,0,mgw));
                 for (int i = 0; i < qnum.toInt() - 1; i++)
                 {
                     mgw->Players.append(new PlayerWidget(QString(personName[i]), QString(":/UNO2D/" + QString::number(i + 1) + ".png"), mgw));
-                    mgw->Players[i + 1]->setCurrentCardCount(7);
                 }
+                mgw->initBackend(qnum.toInt(),qname,true);
                 this->hide();
                 mgw->show();
 

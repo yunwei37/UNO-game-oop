@@ -19,6 +19,7 @@ public:
     QString resName;
     QPixmap pix;
 
+
 public:
     explicit CardWidget(QWidget *parent = nullptr);
     CardWidget(int id, int color, QWidget *parent = nullptr);

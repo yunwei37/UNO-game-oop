@@ -11,6 +11,41 @@
 #include <QTimer>
 #include <QElapsedTimer>
 #include <QTime>
+
+void myGameWindow::updateStatus()
+{
+    qDebug() <<"statue"<< statue;
+    qDebug() << "turn: " << backend->getCurrnetTurnID();
+    QVector<Card*> mycards;
+    this->backend->getPlayerCards(0,mycards);
+    for(auto c:MyCards){
+        delete c;
+    }
+    MyCards.clear();
+    for (auto c : mycards) {
+        int id =  c->getCardId();
+        int color = Card::getColorById(id);
+        int num = Card::getCardNumById(id);
+        int type = Card::getCardTypeById(id);
+        if(type == Card::NUMBERIC){
+             MyCards.append(new CardWidget(num,color,this));
+        }else if (type == Card::SKIP){
+             MyCards.append(new CardWidget(12,color,this));
+        }else if (type == Card::RESERVE){
+             MyCards.append(new CardWidget(11,color,this));
+        }else if (type == Card::DRAW_TWO){
+             MyCards.append(new CardWidget(10,color,this));
+        }else if (type == Card::WILD_DRAW_FOUR){
+            MyCards.append(new CardWidget(14,color,this));
+        }else if (type == Card::WILD){
+            MyCards.append(new CardWidget(13,color,this));
+        }
+    }
+    for (int i = 0; i < Players.length(); ++i) {
+        Players[i]->setCurrentCardCount(backend->getPlayerCardCount(i));
+    }
+}
+
 myGameWindow::myGameWindow(QWidget *parent) : QMainWindow(parent)
 {
     isUno = false;
@@ -51,15 +86,28 @@ myGameWindow::myGameWindow(QWidget *parent) : QMainWindow(parent)
         //弹起特效
         goBtn->zoom1();
         goBtn->zoom2();
-        QTimer::singleShot(400, this, [=]() {
+        QTimer::singleShot(400,  this, [=]() {
+            if (backend->getCurrnetTurnID() != 0 ||  ( statue != 1 && statue != 3)){
+                return;
+            }
+            QVector<Card*> mycards;
+            this->backend->getPlayerCards(0,mycards);
+            QVector<int> validids;
+            backend->getPlayerValidCards(0,validids);
+            if(validids.length()==0){
+                emit draw();
+                return;
+            }
             for (int i = 0; i < MyCards.length(); i++)
             {
-                if (MyCards[i]->getIsClick())
+                if (validids.count( mycards[i]->getCardId())!=0 && MyCards[i]->getIsClick())
                 {
+
                     MyCards[i]->hide();
                     int a = MyCards[i]->id;
                     int b = MyCards[i]->color;
                     MyCards.erase(MyCards.begin() + i);
+
                     if (a >= 10 && a <= 14)
                     {
                         PickCards.append(new CardWidget(a, b, this));
@@ -138,15 +186,24 @@ myGameWindow::myGameWindow(QWidget *parent) : QMainWindow(parent)
                                 yellowBtn->hide();
                                 greenBtn->hide();
                             });
+                            emit play(mycards[i]->getCardId(),(Card::COLOR)this->color);
+                        }else{
+                            emit play(mycards[i]->getCardId(),mycards[i]->getColor());
+
                         }
                         isChange = false;
-                    }
+                    } else {
+                        emit play(mycards[i]->getCardId(),mycards[i]->getColor());
 
+                    }
                     break;
                 }
             }
+            statue = this->backend->getCurrentStatue();
+            updateStatus();
         });
     });
+
     MyPushButton *unoBtn = new MyPushButton(":/UNO2D/UNO.png");
     unoBtn->setParent(this);
     unoBtn->move(700, 500);
@@ -158,6 +215,7 @@ myGameWindow::myGameWindow(QWidget *parent) : QMainWindow(parent)
             unoBtn->zoom2();
             QTimer::singleShot(400, this, [=]() {
                 isPress = true;
+                emit uno();
                 update();
             });
         }
@@ -166,11 +224,13 @@ myGameWindow::myGameWindow(QWidget *parent) : QMainWindow(parent)
         isPress = false;
     time = new QTimer(this);
     rat = 0;
+
     connect(time, &QTimer::timeout, [=]() {
         if (rat++ == 360)
             rat = 0;
         update();
     });
+
     time->start(10);
     connect(setBtn, &MyPushButton::clicked, [=]() {
         //弹起特效
@@ -181,6 +241,7 @@ myGameWindow::myGameWindow(QWidget *parent) : QMainWindow(parent)
             this->close();
         });
     });
+
 }
 
 void myGameWindow::showCards()
@@ -277,6 +338,7 @@ void myGameWindow::showPlayers()
         Players[7]->raise();
     }
 }
+
 void myGameWindow::showEffort()
 {
     int a = PickCards.length() - 1;
@@ -313,12 +375,14 @@ void myGameWindow::showEffort()
     PickCards[a]->show();
     PickCards[a]->raise();
 }
+
 void myGameWindow::changeDirection()
 {
     turnDirection = ~turnDirection;
     rat = 0;
     update();
 }
+
 void myGameWindow::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
@@ -363,6 +427,50 @@ void myGameWindow::paintEvent(QPaintEvent *event)
         effortNum++;
     }
 }
+
+void myGameWindow::TimerTimeOut()
+{
+    int cardid;
+    int colorid;
+    QVector<int> validids;
+    QVector<Card*> mycards;
+    backend->getPlayerCards(backend->getCurrnetTurnID(), mycards);
+    backend->getPlayerValidCards(backend->getCurrnetTurnID(),validids);
+    if (backend->getCurrnetTurnID() == 0 && ( statue == 1 || statue == 3) ) {			// if opera
+                    if (validids.size() > 0) {
+                        //std::cin >> cardid;
+                        cardid = validids[rand() % validids.size()];
+                        if (Card::getCardTypeById(cardid) == Card::WILD || Card::getCardTypeById(cardid) == Card::WILD_DRAW_FOUR)
+                            colorid = rand() % 4;
+                        else {
+                            if (mycards.size() == 2) {
+                                emit uno();
+                            }
+                            emit play(cardid, (Card::COLOR)colorid);
+                            statue = this->backend->getCurrentStatue();
+                            updateStatus();   // for put
+                        }
+                    }
+                    else {
+                        emit draw();
+                    }
+                }
+
+                statue = this->backend->getCurrentStatue();
+                updateStatus();   // for put		// get next statue
+                if (statue == 5) {
+                    statue = this->backend->getCurrentStatue();
+                    updateStatus();   // for put
+                }
+                if (statue == 8 || statue == 9) {
+                    exit(0);
+                }
+    if (backend->getCurrnetTurnID() != 0 ||  ( statue != 1 && statue != 3)){
+        statue = this->backend->getCurrentStatue();
+        updateStatus();
+    }
+}
+
 void myGameWindow::setGameProperties(int gameType, int playerNum)
 {
     this->gameType = gameType;
@@ -377,4 +485,17 @@ void myGameWindow::initBackend(int playerNum, QString myName, bool isAI)
     connect(this, &myGameWindow::play, this->backend, &Backend::playCard);
     connect(this, &myGameWindow::uno, this->backend, &Backend::sayUNO);
 
+
+    m_timer = new QTimer(this);
+    //设置定时器是否为单次触发。默认为 false 多次触发
+    m_timer->setSingleShot(false);
+    //启动或重启定时器, 并设置定时器时间：毫秒
+    connect(m_timer, &QTimer::timeout, this, &myGameWindow::TimerTimeOut);
+    m_timer->start(2000);
+    //定时器触发信号槽
+    emit operate();
+    statue = this->backend->getCurrentStatue();
+    updateStatus();
+    statue = this->backend->getCurrentStatue();
+    updateStatus();
 }

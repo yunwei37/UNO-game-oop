@@ -7,6 +7,9 @@ void PlayerWidget::setCurrentCardCount(int value)
 {
     currentCardCount = value;
     Cards.clear();
+    for(auto c:Cards){
+        delete c;
+    }
     for (int i = 0; i < currentCardCount; ++i)
     {
         Cards.append(new CardWidget(this));

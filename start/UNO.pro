@@ -62,3 +62,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     UNO2D.qrc
+
+DISTFILES += \
+    UNO2D/back3.png

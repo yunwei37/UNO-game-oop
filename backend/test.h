@@ -42,7 +42,7 @@ public:
 			b->getPlayerCards(b->getCurrnetTurnID(), mycards);
 			b->getPlayerValidCards(b->getCurrnetTurnID(),validids);
 
-			if (b->getCurrnetTurnID() == 0 &&( statue == 1 || statue == 3)) {			// if opera
+			if (b->getCurrnetTurnID() == 0 && ( statue == 1 || statue == 3) ) {			// if opera
 				if (validids.size() > 0) {
 					//std::cin >> cardid;
 					cardid = validids[rand() % validids.size()];

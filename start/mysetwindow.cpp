@@ -46,6 +46,7 @@ mysetwindow::mysetwindow(QWidget *parent) : QMainWindow(parent)
     PersonName->show();
     PersonNum->show();
     rdw = new readywindow();
+
     connect(yesBtn, &MyPushButton::clicked, [=]() {
         //弹起特效
         yesBtn->zoom1();

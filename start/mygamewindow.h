@@ -32,6 +32,12 @@ private:
     CardWidget *c;
     victory *vic;
 
+    int statue;
+
+
+    QTimer *m_timer;
+    void updateStatus();
+
 public:
 
     explicit myGameWindow(QWidget *parent = nullptr);
@@ -59,6 +65,7 @@ public slots:
     void AIEnds() {
         std::cout << "AI finish" << std::endl;
     }
+    void TimerTimeOut();
 signals:
     void operate();
     void draw();
