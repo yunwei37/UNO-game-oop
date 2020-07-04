@@ -6,7 +6,7 @@
 #include <mypushbutton.h>
 #include <QTimer>
 #include "mainwindow.h"
-#include"readywindow.h"
+#include "readywindow.h"
 mysetwindow::mysetwindow(QWidget *parent) : QMainWindow(parent)
 {
     //配置场景
@@ -16,9 +16,9 @@ mysetwindow::mysetwindow(QWidget *parent) : QMainWindow(parent)
 
     //设置标题
     QLineEdit *PersonNum = new QLineEdit(this);
-    PersonNum->setFont(QFont("微软雅黑" ,10 ,  QFont::Bold));
+    PersonNum->setFont(QFont("微软雅黑", 10, QFont::Bold));
     QPalette palette;
-    palette.setColor(QPalette::Text,Qt::white);
+    palette.setColor(QPalette::Text, Qt::white);
     PersonNum->setPalette(palette);
     //PersonNum->setPlaceholderText("请输入游戏人数");
     PersonNum->setEchoMode(QLineEdit::Normal);
@@ -28,9 +28,9 @@ mysetwindow::mysetwindow(QWidget *parent) : QMainWindow(parent)
     PersonNum->move(this->width() * 0.5 - 100, this->height() * 0.5 - 20);
 
     QLineEdit *PersonName = new QLineEdit(this);
-    PersonName->setFont(QFont("微软雅黑" ,10 ,  QFont::Bold));
+    PersonName->setFont(QFont("微软雅黑", 10, QFont::Bold));
     QPalette palettee;
-    palettee.setColor(QPalette::Text,Qt::white);
+    palettee.setColor(QPalette::Text, Qt::white);
     PersonName->setPalette(palette);
     //PersonName->setPlaceholderText("请输入用户名");
     PersonName->setEchoMode(QLineEdit::Normal);
@@ -45,18 +45,18 @@ mysetwindow::mysetwindow(QWidget *parent) : QMainWindow(parent)
     yesBtn->move(this->width() * 0.75, this->height() * 0.65);
     PersonName->show();
     PersonNum->show();
-    rdw=new readywindow();
+    rdw = new readywindow();
     connect(yesBtn, &MyPushButton::clicked, [=]() {
         //弹起特效
         yesBtn->zoom1();
         yesBtn->zoom2();
         qnum = PersonNum->text();
         qname = PersonName->text();
-        rdw->setNumName(qnum,qname);
+        rdw->setNumName(qnum, qname);
         QTimer::singleShot(400, this, [=]() {
             //进入设置场景
-            qDebug() <<  qnum;
-            qDebug() <<  qname;
+            qDebug() << qnum;
+            qDebug() << qname;
             this->hide();
             rdw->show();
         });
@@ -74,8 +74,7 @@ mysetwindow::mysetwindow(QWidget *parent) : QMainWindow(parent)
             emit this->mysetBack();
         });
     });
-    connect(rdw,&readywindow::mysetBack,this,[=]()
-    {
+    connect(rdw, &readywindow::mysetBack, this, [=]() {
         rdw->hide();
         this->show();
     });

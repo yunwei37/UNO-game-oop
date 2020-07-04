@@ -3,16 +3,16 @@
 
 #include <QMainWindow>
 #include "mygamewindow.h"
-#include"readywindow.h"
+#include "readywindow.h"
 class readywindow;
 class mysetwindow : public QMainWindow
 {
   Q_OBJECT
 public:
+  readywindow *rdw;
+  QString qnum;
+  QString qname;
 
-    readywindow * rdw;
-    QString qnum;
-    QString qname;
 public:
   explicit mysetwindow(QWidget *parent = nullptr);
   void paintEvent(QPaintEvent *);

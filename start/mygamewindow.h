@@ -6,9 +6,9 @@
 #include "cardwidget.h"
 #include "playerwidget.h"
 #include "mypushbutton.h"
-#include<QTimer>
-#include"transformation.h"
-#include"victory.h"
+#include <QTimer>
+#include "transformation.h"
+#include "victory.h"
 class victory;
 class myGameWindow : public QMainWindow
 {
@@ -19,7 +19,7 @@ public:
     int playerNum;
     bool turnDirection;
     int nowNum;
-    QTimer* time;
+    QTimer *time;
     int effortNum;
     bool isUno;
     bool isPress;
@@ -30,17 +30,19 @@ public:
     bool isChange;
     CardWidget *c;
     victory *vic;
+
 public:
     explicit myGameWindow(QWidget *parent = nullptr);
     void showCards();
     void showPlayers();
     void changeDirection();
     void showEffort();
-    void get(int gameType,int playerNum);
+    void get(int gameType, int playerNum);
     void showV();
     QVector<CardWidget *> MyCards;
     QVector<PlayerWidget *> Players;
     QVector<CardWidget *> PickCards;
+
 protected:
     virtual void paintEvent(QPaintEvent *event);
 public slots:

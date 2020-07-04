@@ -2,14 +2,14 @@
 #define READYWINDOW_H
 
 #include <QMainWindow>
-#include<QString>
-#include<QVector>
+#include <QString>
+#include <QVector>
 #include <QLineEdit>
-#include"mygamewindow.h"
+#include "mygamewindow.h"
 class readywindow : public QMainWindow
 {
     Q_OBJECT
-public :
+public:
     int nowNum;
     int timeStart;
     long int num;
@@ -22,9 +22,9 @@ public:
     explicit readywindow(QWidget *parent = nullptr);
     void paintEvent(QPaintEvent *);
     void connecting();
-    void setNumName(QString num,QString name);
+    void setNumName(QString num, QString name);
 signals:
-  void mysetBack();
+    void mysetBack();
 };
 
 #endif // READYWINDOW_H

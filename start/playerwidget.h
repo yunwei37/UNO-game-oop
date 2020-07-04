@@ -15,6 +15,7 @@ public:
     QVector<CardWidget *> Cards;
     QString playerID;
     bool isTurned;
+
 public:
     explicit PlayerWidget(QWidget *parent = nullptr);
     explicit PlayerWidget(QString id, QPixmap playerImg, QWidget *parent = nullptr);
