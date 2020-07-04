@@ -46,6 +46,8 @@
         "xtree": "cpp",
         "xutility": "cpp"
     },
-    "markdown.extension.toc.orderedList": true,
-    "files.eol": "\n"
+    "files.eol": "\n",
+    "markdown-toc.depthTo": 3,
+    "markdown-pdf.includeDefaultStyles": false,
+    "markdown-pdf.highlightStyle": "github.css"
 }
